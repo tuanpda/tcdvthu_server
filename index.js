@@ -16,7 +16,7 @@ app.use(bodyParse.json());
 app.use('/api/auth', require('./api/auth'));
 
 // Middleware xác thực chỉ áp dụng cho các endpoint cần được bảo vệ
-app.use(['/', '/api/users', '/api/danhmucs', '/api/nodemailer'], verifyToken);
+app.use(['/', '/api/users', '/api/danhmucs' ], verifyToken);
 
 app.get('/', (req, res) => {
     res.send('<h1>🤖 API SQLSERVER from NODEJS - TEST</h1>');
@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', require('./api/users'));
 app.use('/api/danhmucs', require('./api/danhmucs'));
-app.use('/api/nodemailer', require('./api/nodemailer'));
+// app.use('/api/nodemailer', require('./api/nodemailer'));
 app.use('/api/kekhai', require('./api/kekhai'));
 app.use('/api/tochucdvt', require('./api/tochucdvt'));
 
