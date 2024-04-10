@@ -51,7 +51,7 @@ router.post("/access/login", async (req, res, next) => {
             message: "Authenticate failed, not active user",
           });
         } else {
-          let token = jwt.sign(user, process.env.SECRET, { expiresIn: "1h" });
+          let token = jwt.sign(user, process.env.SECRET, { expiresIn: "12h" });
           res.json({ success: 8, user, token });
           //console.log(user);
         }
