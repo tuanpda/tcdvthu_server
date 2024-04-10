@@ -14,6 +14,7 @@ app.use(bodyParse.urlencoded({ extended: false }));
 app.use(bodyParse.json());
 
 app.use('/api/auth', require('./api/auth'));
+// app.use('/api/users/account', require('./api/users/account'));
 
 // Middleware xác thực chỉ áp dụng cho các endpoint cần được bảo vệ
 app.use(['/', '/api/users', '/api/danhmucs' ], verifyToken);
