@@ -170,7 +170,7 @@ router.get("/dmdtdong", async (req, res) => {
     const result = await pool
       .request()
       .query(
-        `SELECT * FROM dm_doituongdong order by maloaihinh`
+        `SELECT * FROM dm_doituongdong order by madoituong`
       );
     const kq = result.recordset;
     res.json(kq);
