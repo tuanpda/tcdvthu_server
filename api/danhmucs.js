@@ -115,5 +115,69 @@ router.get("/dmbenhvienwithtinh", async (req, res) => {
   }
 });
 
+// loại hình tham gia
+router.get("/dmloaihinhtg", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .query(
+        `SELECT * FROM dm_loaihinhtg order by maloaihinh`
+      );
+    const kq = result.recordset;
+    res.json(kq);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// người thứ
+router.get("/dmnguoithu", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .query(
+        `SELECT * FROM dm_nguoithu order by manguoithu`
+      );
+    const kq = result.recordset;
+    res.json(kq);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// phương thức đóng
+router.get("/dmptdong", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .query(
+        `SELECT * FROM dm_phuongthucdong order by maloaihinh`
+      );
+    const kq = result.recordset;
+    res.json(kq);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// đối tượng đóng
+router.get("/dmdtdong", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .query(
+        `SELECT * FROM dm_doituongdong order by maloaihinh`
+      );
+    const kq = result.recordset;
+    res.json(kq);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 
 module.exports = router;
