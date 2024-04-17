@@ -195,5 +195,21 @@ router.get("/tylehotro", async (req, res) => {
   }
 });
 
+// ty le đóng BHXH Tự nguyện IS
+router.get("/tyledongbhtn", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .query(
+        `SELECT * FROM dm_tyledong where active=1`
+      );
+    const kq = result.recordset;
+    res.json(kq);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 
 module.exports = router;
