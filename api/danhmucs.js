@@ -227,5 +227,21 @@ router.get("/mucchuanngheo", async (req, res) => {
   }
 });
 
+// tỷ lệ địa phương hỗ trợ IS
+router.get("/diaphuonghtis", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .query(
+        `SELECT * FROM dm_tylediaphuonghtis`
+      );
+    const kq = result.recordset;
+    res.json(kq);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 
 module.exports = router;
