@@ -211,5 +211,21 @@ router.get("/tyledongbhtn", async (req, res) => {
   }
 });
 
+// chuẩn nghèo BHXH Tự nguyện IS
+router.get("/mucchuanngheo", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .query(
+        `SELECT * FROM dm_chuanngheo where active=1`
+      );
+    const kq = result.recordset;
+    res.json(kq);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 
 module.exports = router;
