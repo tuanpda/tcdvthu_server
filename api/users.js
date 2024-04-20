@@ -187,6 +187,7 @@ router.post("/user/fix", upload.single("avatar"), async (req, res) => {
         .input("email", req.body.email)
         .input("name", req.body.name)
         .input("avatar", linkAvatar)
+        .input("active", req.body.active)
         .input("updatedAt", req.body.updatedAt)
         .input("updatedBy", req.body.updatedBy)
         .input("ghichu", req.body.ghichu)
@@ -206,6 +207,7 @@ router.post("/user/fix", upload.single("avatar"), async (req, res) => {
               email = @email, 
               name = @name,
               avatar = @avatar,
+              active = @active,
               updatedAt = @updatedAt,
               updatedBy = @updatedBy,
               ghichu = @ghichu
