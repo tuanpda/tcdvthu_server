@@ -140,7 +140,7 @@ router.patch("/user/:_id", upload.single("avatar"), async (req, res) => {
 // cập nhật thông tin người dùng
 router.post("/user/fix", upload.single("avatar"), async (req, res) => {
   let linkAvatar;
-  // console.log(req.body);
+  console.log(req.body);
   if (!req.file) {
     linkAvatar = req.body.avatar;
   } else {
