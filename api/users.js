@@ -337,6 +337,7 @@ router.post("/account", upload.single("avatar"), async (req, res) => {
       .input("tenxa", req.body.tenxa)
       .input("madaily", req.body.madaily)
       .input("tendaily", req.body.tendaily)
+      .input("nvcongty", req.body.nvcongty)
       .input("diachi", req.body.diachi)
       .input("cccd", req.body.cccd)
       .input("sodienthoai", req.body.sodienthoai)
@@ -351,10 +352,10 @@ router.post("/account", upload.single("avatar"), async (req, res) => {
       .input("createdAt", req.body.createdAt)
       .input("updatedBy", req.body.updatedBy)
       .input("updatedAt", req.body.updatedAt).query(`
-                INSERT INTO users (matochuc, tentochuc, matinh, tentinh, mahuyen, tenhuyen, maxa, tenxa, madaily, tendaily,
+                INSERT INTO users (matochuc, tentochuc, matinh, tentinh, mahuyen, tenhuyen, maxa, tenxa, madaily, tendaily, nvcongty,
                   diachi, cccd, sodienthoai, email, username, name, password, role, avatar, active, 
                   createdBy, createdAt, updatedBy, updatedAt) 
-                VALUES (@matochuc, @tentochuc, @matinh, @tentinh, @mahuyen, @tenhuyen, @maxa, @tenxa, @madaily, @tendaily,
+                VALUES (@matochuc, @tentochuc, @matinh, @tentinh, @mahuyen, @tenhuyen, @maxa, @tenxa, @madaily, @tendaily, @nvcongty,
                   @diachi, @cccd, @sodienthoai, @email, @username, @name, @password, @role, @avatar, @active,
                   @createdBy, @createdAt, @updatedBy, @updatedAt);
             `);
