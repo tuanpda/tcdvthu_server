@@ -255,6 +255,7 @@ router.post("/user/changepass", async (req, res) => {
 
 // Đổi Email
 router.post("/user/changeemail", async (req, res) => {
+  console.log(req.body);
   try {
     await pool.connect();
     const result = await pool
@@ -262,7 +263,7 @@ router.post("/user/changeemail", async (req, res) => {
       .input("_id", req.body._id)
       .query(`SELECT * FROM users WHERE _id = @_id`);
     let user = result.recordset[0];
-    // console.log(user);
+    console.log(user);
     if (user) {
       await pool
         .request()
