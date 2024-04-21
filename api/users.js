@@ -225,6 +225,8 @@ router.post("/user/fix", upload.single("avatar"), async (req, res) => {
 
 // Đổi mật khẩu
 router.post("/user/changepass", async (req, res) => {
+  console.log(req.body);
+  const password = req.body.password;
   try {
     await pool.connect();
     const result = await pool
@@ -233,21 +235,34 @@ router.post("/user/changepass", async (req, res) => {
       .query(`SELECT * FROM users WHERE _id = @_id`);
     let user = result.recordset[0];
     // console.log(user);
-    if (user) {
-      await pool
-        .request()
-        .input("_id", req.body._id)
-        .input("password", req.body.password)
-        .query(
-          `UPDATE users SET 
-            password = @password
-          WHERE _id = @_id;`
-        );
-      res.json({
-        success: true,
-        message: "Update success !",
-      });
+    if (user && req.body.password) {
+      var passwordOld = req.body.password;
+      const match = await bcrypt.compare(passwordOld, user.password);
+      if (match) {
+        console.log("mật khẩu đúng");
+      } else {
+        console.log("mật khẩu sai");
+      }
+      // const encryptedPassword = await bcrypt.hash(password, 10);
+      // user.password = encryptedPassword;
     }
+    // if (user) {
+    //   await pool
+    //     .request()
+    //     .input("_id", req.body._id)
+    //     .input("password", user.password)
+    //     .input("email", req.body.email)
+    //     .query(
+    //       `UPDATE users SET
+    //         password = @password,
+    //         email = @email
+    //       WHERE _id = @_id;`
+    //     );
+    //   res.json({
+    //     success: true,
+    //     message: "Update success !",
+    //   });
+    // }
   } catch (error) {
     res.status(500).json(error);
   }
@@ -255,7 +270,7 @@ router.post("/user/changepass", async (req, res) => {
 
 // Đổi Email
 router.post("/user/changeemail", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     await pool.connect();
     const result = await pool
@@ -263,7 +278,7 @@ router.post("/user/changeemail", async (req, res) => {
       .input("_id", req.body._id)
       .query(`SELECT * FROM users WHERE _id = @_id`);
     let user = result.recordset[0];
-    console.log(user);
+    // console.log(user);
     if (user) {
       await pool
         .request()
