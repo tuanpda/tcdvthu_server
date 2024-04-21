@@ -223,10 +223,11 @@ router.post("/user/fix", upload.single("avatar"), async (req, res) => {
   }
 });
 
-// Đổi mật khẩu
+// Đổi mật khẩu và email
 router.post("/user/changepass", async (req, res) => {
   console.log(req.body);
   const password = req.body.password;
+  const newPassword = req.body.newPassword;
   try {
     await pool.connect();
     const result = await pool
@@ -238,33 +239,30 @@ router.post("/user/changepass", async (req, res) => {
     if (user && req.body.password) {
       const match = await bcrypt.compare(password, user.password);
       if (match) {
-        console.log("mật khẩu đúng");
+        const encryptedPassword = await bcrypt.hash(newPassword, 10);
+
+        await pool
+          .request()
+          .input("_id", req.body._id)
+          .input("password", encryptedPassword)
+          .input("email", req.body.email)
+          .query(
+            `UPDATE users SET
+            password = @password,
+            email = @email
+          WHERE _id = @_id;`
+          );
+        res.json({
+          success: true,
+          message: "Update success !",
+        });
       } else {
         res.json({
           success: 5,
           message: "Sai pass !",
         });
       }
-      // const encryptedPassword = await bcrypt.hash(password, 10);
-      // user.password = encryptedPassword;
     }
-    // if (user) {
-    //   await pool
-    //     .request()
-    //     .input("_id", req.body._id)
-    //     .input("password", user.password)
-    //     .input("email", req.body.email)
-    //     .query(
-    //       `UPDATE users SET
-    //         password = @password,
-    //         email = @email
-    //       WHERE _id = @_id;`
-    //     );
-    //   res.json({
-    //     success: true,
-    //     message: "Update success !",
-    //   });
-    // }
   } catch (error) {
     res.status(500).json(error);
   }
