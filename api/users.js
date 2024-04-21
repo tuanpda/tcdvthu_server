@@ -225,7 +225,7 @@ router.post("/user/fix", upload.single("avatar"), async (req, res) => {
 
 // Đổi mật khẩu và email
 router.post("/user/changepass", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const password = req.body.password;
   const newPassword = req.body.newPassword;
   try {

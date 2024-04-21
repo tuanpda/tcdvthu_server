@@ -17,6 +17,10 @@ app.use(bodyParse.json());
 const staticFilesDirectory = path.join(__dirname, 'public');
 app.use(express.static(staticFilesDirectory));
 
+// Tăng giới hạn kích thước thực thể lên 50MB
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
 app.use('/api/auth', require('./api/auth'));
 // app.use('/api/users/account', require('./api/users/account'));
 
