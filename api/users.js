@@ -241,8 +241,8 @@ router.post("/user/changepass", async (req, res) => {
         console.log("mật khẩu đúng");
       } else {
         res.json({
-          success: true,
-          message: "Update success !",
+          success: 5,
+          message: "Sai pass !",
         });
       }
       // const encryptedPassword = await bcrypt.hash(password, 10);
