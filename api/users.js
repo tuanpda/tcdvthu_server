@@ -240,7 +240,10 @@ router.post("/user/changepass", async (req, res) => {
       if (match) {
         console.log("mật khẩu đúng");
       } else {
-        console.log("mật khẩu sai");
+        res.json({
+          success: true,
+          message: "Update success !",
+        });
       }
       // const encryptedPassword = await bcrypt.hash(password, 10);
       // user.password = encryptedPassword;
