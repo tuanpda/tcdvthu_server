@@ -140,7 +140,7 @@ router.patch("/user/:_id", upload.single("avatar"), async (req, res) => {
 // cập nhật thông tin người dùng
 router.post("/user/fix", upload.single("avatar"), async (req, res) => {
   let linkAvatar;
-  console.log(req.body);
+  // console.log(req.body);
   if (!req.file) {
     linkAvatar = req.body.avatar;
   } else {
@@ -241,6 +241,36 @@ router.post("/user/changepass", async (req, res) => {
         .query(
           `UPDATE users SET 
             password = @password
+          WHERE _id = @_id;`
+        );
+      res.json({
+        success: true,
+        message: "Update success !",
+      });
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// Đổi Email
+router.post("/user/changeemail", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .input("_id", req.body._id)
+      .query(`SELECT * FROM users WHERE _id = @_id`);
+    let user = result.recordset[0];
+    // console.log(user);
+    if (user) {
+      await pool
+        .request()
+        .input("_id", req.body._id)
+        .input("email", req.body.email)
+        .query(
+          `UPDATE users SET 
+              email = @email
           WHERE _id = @_id;`
         );
       res.json({
