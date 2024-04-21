@@ -236,8 +236,7 @@ router.post("/user/changepass", async (req, res) => {
     let user = result.recordset[0];
     // console.log(user);
     if (user && req.body.password) {
-      var passwordOld = req.body.password;
-      const match = await bcrypt.compare(passwordOld, user.password);
+      const match = await bcrypt.compare(password, user.password);
       if (match) {
         console.log("mật khẩu đúng");
       } else {
