@@ -329,7 +329,7 @@ router.get("/mucchuanngheo", async (req, res) => {
 });
 
 // chuẩn nghèo BHXH Tự nguyện IS all
-router.get("/mucchuanngheo", async (req, res) => {
+router.get("/mucchuanngheoall", async (req, res) => {
   try {
     await pool.connect();
     const result = await pool
