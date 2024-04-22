@@ -255,7 +255,7 @@ router.get("/tylehotro", async (req, res) => {
     const result = await pool
       .request()
       .query(
-        `SELECT * FROM dm_tylehotro`
+        `SELECT * FROM dm_tylehotro where active=1`
       );
     const kq = result.recordset;
     res.json(kq);
