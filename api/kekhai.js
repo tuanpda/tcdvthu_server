@@ -8,6 +8,8 @@ router.post("/add-kekhai", async (req, res) => {
     await pool.connect();
     const result = await pool
       .request()
+      .input("matochuc", req.body.matochuc)
+      .input("tentochuc", req.body.tentochuc)
       .input("madaily", req.body.madaily)
       .input("tendaily", req.body.tendaily)
       .input("maloaihinh", req.body.maloaihinh)
@@ -57,14 +59,14 @@ router.post("/add-kekhai", async (req, res) => {
       .input("createdBy", req.body.createdBy)
       .input("updatedAt", req.body.updatedAt)
       .input("updatedBy", req.body.updatedBy).query(`
-                  INSERT INTO kekhai (madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
+                  INSERT INTO kekhai (matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
                     maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs, sotien,	
                     tylengansachdiaphuong, hotrokhac, tungay, heso, tyledong, muctiendong,	
                     maphuongthucdong, tenphuongthucdong, sothang, tuthang, tientunguyendong, tienlai, madoituong,	
                     tendoiduong, tylensnnht, tiennsnnht, tylensdp, tiennsdp, matinh, tentinh, maquanhuyen, tenquanhuyen,	
                     maxaphuong, tenxaphuong, benhvientinh, mabenhvien, tenbenhvien, muchuongbhyt, tothon, ghichu,	
                     createdAt, createdBy, updatedAt, updatedBy) 
-                  VALUES (@madaily, @tendaily, @maloaihinh, @tenloaihinh, @hoten, @masobhxh, @cccd, @dienthoai,	
+                  VALUES (@matochuc, @tentochuc, @madaily, @tendaily, @maloaihinh, @tenloaihinh, @hoten, @masobhxh, @cccd, @dienthoai,	
                     @maphuongan, @tenphuongan, @ngaysinh, @gioitinh, @nguoithu, @tienluongcs, @sotien,	
                     @tylengansachdiaphuong, @hotrokhac, @tungay, @heso, @tyledong, @muctiendong,	
                     @maphuongthucdong, @tenphuongthucdong, @sothang, @tuthang, @tientunguyendong, @tienlai, @madoituong,	
