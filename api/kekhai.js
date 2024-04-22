@@ -133,9 +133,9 @@ router.get("/getallkekhaiwithuser", async (req, res) => {
     await pool.connect();
     const result = await pool
       .request()
-      // .input("maloaihinh", req.query.maloaihinh)
+      .input("maloaihinh", req.query.maloaihinh)
       .input("madaily", req.query.madaily)
-      .query(`SELECT * FROM kekhai where madaily=@madaily`);
+      .query(`SELECT * FROM kekhai where madaily=@madaily and maloaihinh=@maloaihinh`);
     const kekhai = result.recordset;
     res.json(kekhai);
   } catch (error) {
