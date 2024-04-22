@@ -264,6 +264,22 @@ router.get("/tylehotro", async (req, res) => {
   }
 });
 
+// ty le ho tro
+router.get("/tylehotroall", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .query(
+        `SELECT * FROM dm_tylehotro`
+      );
+    const kq = result.recordset;
+    res.json(kq);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 // ty le đóng BHXH Tự nguyện IS
 router.get("/tyledongbhtn", async (req, res) => {
   try {
