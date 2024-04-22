@@ -93,7 +93,7 @@ router.get("/all-ds-kekhai", async (req, res) => {
   }
 });
 
-// danh sách kê khai with loại hình
+// all danh sách kê khai with loại hình
 router.get("/getalldskkwithmalh", async (req, res) => {
   // console.log(req.query.maloaihinh);
   try {
@@ -102,6 +102,23 @@ router.get("/getalldskkwithmalh", async (req, res) => {
       .request()
       .input("maloaihinh", req.query.maloaihinh)
       .query(`SELECT * FROM kekhai where maloaihinh=@maloaihinh`);
+    const kekhai = result.recordset;
+    res.json(kekhai);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// all danh sách kê khai with loại hình with madaily
+router.get("/getalldskkwithmalh", async (req, res) => {
+  // console.log(req.query.maloaihinh);
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .input("maloaihinh", req.query.maloaihinh)
+      .input("madaily", req.query.madaily)
+      .query(`SELECT * FROM kekhai where maloaihinh=@maloaihinh and madaily=@madaily`);
     const kekhai = result.recordset;
     res.json(kekhai);
   } catch (error) {
