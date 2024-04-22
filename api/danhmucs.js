@@ -49,6 +49,22 @@ router.get("/dmquanhuyenwithmatinh", async (req, res) => {
   }
 });
 
+// danh mục xã phường
+router.get("/dmxaphuong", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .query(
+        `SELECT * FROM dm_xaphuong order by maxaphuong`
+      );
+    const xa = result.recordset;
+    res.json(xa);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 // danh mục xã phường với mã huyện
 router.get("/dmxaphuongwithmahuyen", async (req, res) => {
   try {
