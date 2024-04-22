@@ -65,6 +65,59 @@ router.get("/dmxaphuong", async (req, res) => {
   }
 });
 
+// danh mục xã phường & phân trang
+router.get("/get-all-xaphuongwithphantrang", async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1; // Chuyển đổi page thành số nguyên
+    const limit = parseInt(req.query.limit, 20) || 20;
+    const offset = (page - 1) * limit;
+    // console.log(offset);
+    // console.log(typeof(offset));
+
+    await pool.connect();
+    const result = await pool
+      .request()
+      .input("offset", offset)
+      .input("limit", limit)
+      .query(
+        `SELECT * FROM dm_xaphuong ORDER BY _id desc OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY`
+      );
+
+    const data = result.recordset;
+
+    // Đếm tổng số lượng bản ghi
+    const countResult = await pool
+      .request()
+      .query(
+        `SELECT COUNT(*) AS totalCount FROM dm_xaphuong`
+      );
+    const totalCount = countResult.recordset[0].totalCount;
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const info = {
+      count: totalCount,
+      pages: totalPages,
+      next:
+        page < totalPages
+          ? `${req.path}?page=${page + 1}`
+          : null,
+      prev:
+        page > 1 ? `${req.path}?page=${page - 1}` : null,
+    };
+
+    // Tạo đối tượng JSON phản hồi
+    const response = {
+      info: info,
+      results: data,
+    };
+
+    res.json(response);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 // danh mục xã phường với mã huyện
 router.get("/dmxaphuongwithmahuyen", async (req, res) => {
   try {
