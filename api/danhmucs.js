@@ -361,7 +361,7 @@ router.get("/diaphuonghtis", async (req, res) => {
 });
 
 // tỷ lệ địa phương hỗ trợ IS all
-router.get("/diaphuonghtis", async (req, res) => {
+router.get("/diaphuonghtisall", async (req, res) => {
   try {
     await pool.connect();
     const result = await pool
