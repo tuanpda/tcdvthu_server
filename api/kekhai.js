@@ -126,6 +126,23 @@ router.get("/getalldskkwithmalh", async (req, res) => {
   }
 });
 
+// all danh sách kê khai with loại hình with madaily
+router.get("/getallkekhaiwithuser", async (req, res) => {
+  // console.log(req.query.maloaihinh);
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      // .input("maloaihinh", req.query.maloaihinh)
+      .input("madaily", req.query.madaily)
+      .query(`SELECT * FROM kekhai where madaily=@madaily`);
+    const kekhai = result.recordset;
+    res.json(kekhai);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 // tìm hồ sơ theo từ ngày đến ngày - đối với ar và bi
 router.get("/hskekhaifromtotungay", async (req, res) => {
   try {
