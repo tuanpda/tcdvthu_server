@@ -150,9 +150,10 @@ router.get("/hskekhaifromtotungay", async (req, res) => {
     const result = await pool
       .request()
       .input("maloaihinh", req.query.maloaihinh)
+      .input("madaily", req.query.madaily)
       .input("tungay", req.query.tungay)
       .input("denngay", req.query.denngay)
-      .query(`select * from kekhai where maloaihinh=@maloaihinh and tungay between @tungay and @denngay`);
+      .query(`select * from kekhai where maloaihinh=@maloaihinh and madaily=@madaily and tungay between @tungay and @denngay`);
     const kekhai = result.recordset;
     res.json(kekhai);
   } catch (error) {
