@@ -19,7 +19,7 @@ router.get("/find-nguoihuong", async (req, res) => {
 });
 
 // tim nguoi huong theo cccd
-router.get("/find-nguoihuong", async (req, res) => {
+router.get("/find-nguoihuong-cccd", async (req, res) => {
     try {
       await pool.connect();
       const result = await pool
