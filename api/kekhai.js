@@ -180,6 +180,8 @@ router.post("/kekhai-trans", async (req, res) => {
     console.log(item.heso);
     console.log(item.tyledong);
     console.log(item.muctiendong);
+    console.log(item.maphuongthucdong);
+    console.log(item.tenphuongthucdong);
 
     table.rows.add(
       newSoHoSo,
