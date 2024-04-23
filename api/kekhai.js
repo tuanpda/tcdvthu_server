@@ -82,54 +82,61 @@ router.post("/add-kekhai", async (req, res) => {
   }
 });
 
-// tạo kê khai mới
-router.post("/add-kekhaisohoso", async (req, res) => {
-  const { items } = req.body; // Dữ liệu đầu vào là một mảng 'items'
+router.post("/kekhai-trans", async (req, res) => {
+    console.log(req.body);
 
-  try {
-    await pool.connect(); // Đảm bảo đã kết nối
+    // const data = req.body
 
-    // Tạo yêu cầu từ pool
-    const request = pool.request();
+    // const table = new Table("kekhaitest");
+    // table.create = false;
 
-    // Tạo bảng kiểu 'KekhaiTableType'
-    const table = new Table("KekhaiTableType"); // Sử dụng định nghĩa Table có sẵn
-    table.create = true;
+    // table.columns.add("sohoso", NVarChar, { nullable: true });
+    // table.columns.add("matochuc", NVarChar, { nullable: true });
+    // table.columns.add("tentochuc", NVarChar, { nullable: true });
+    // table.columns.add("madaily", NVarChar, { nullable: true });
+    // table.columns.add("tendaily", NVarChar, { nullable: true });
+    // table.columns.add("masobhxh", NVarChar, { nullable: true });
 
-    // Thêm cột và kiểu dữ liệu cho bảng
-    table.columns.add("sohoso", NVarChar);
-    table.columns.add("matochuc", NVarChar);
-    table.columns.add("tentochuc", NVarChar);
-    table.columns.add("madaily", NVarChar);
-    table.columns.add("tendaily", NVarChar);
-    table.columns.add("masobhxh", NVarChar);
+    // //console.log(rows.length);
 
-    // Thêm dữ liệu vào kiểu bảng
-    items.forEach((item) => {
-      table.rows.add(
-        item.sohoso,
-        item.matochuc,
-        item.tentochuc,
-        item.madaily,
-        item.tendaily,
-        item.masobhxh,
-      );
-    });
+    // for (let j = 0; j < data.length; j += 1) {
+    //   table.rows.add(
+    //     rows[j][0],
+    //     rows[j][1],
+    //     rows[j][2],
+    //     rows[j][3],
+    //     rows[j][4],
+    //     rows[j][5],
+    //     rows[j][6],
+    //     rows[j][7],
+    //     rows[j][8],
+    //     rows[j][9],
+    //     rows[j][10],
+    //     rows[j][11],
+    //     rows[j][12],
+    //     rows[j][13],
+    //     rows[j][14],
+    //     nguoiimport,
+    //     ngayimport
+    //   );
+    // }
 
-    // Sử dụng stored procedure để chèn dữ liệu
-    await request
-      .input("data", table) // Sử dụng dữ liệu từ bảng đã định nghĩa
-      .execute("sp_InsertKekhai");
+    // try {
+    //   await pool.connect();
 
-    res.json({ success: true });
-  } catch (error) {
-    console.error("Lỗi:", error);
-    res.status(500).json({ error: error.message });
-  } finally {
-    if (pool.connected) {
-      await pool.close(); // Đóng kết nối sau khi hoàn thành
-    }
-  }
+    //   const results = await pool.request().bulk(table);
+    //   console.log(`rows affected ${results.rowsAffected}`);
+    //   console.log(results);
+    // } catch (error) {
+    //   return res.status(400).json({
+    //     status: "error",
+    //     error,
+    //   });
+    // }
+
+    // res.status(200).json({
+    //   status: "succes",
+    // });
 });
 
 // danh sách kê khai all
