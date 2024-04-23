@@ -113,22 +113,22 @@ router.post("/kekhai-trans", async (req, res) => {
 
   table.columns.add("tylengansachdiaphuong", Int, { nullable: true });
   table.columns.add("hotrokhac", Int, { nullable: true });
-  // table.columns.add("tungay", Date, { nullable: true });
+  table.columns.add("tungay", Date, { nullable: true });
   table.columns.add("tyledong", Int, { nullable: true });
   table.columns.add("muctiendong", Float, { nullable: true });
   table.columns.add("maphuongthucdong", NVarChar, { nullable: true });
   table.columns.add("tenphuongthucdong", NVarChar, { nullable: true });
 
-  // table.columns.add("sothang", Int, { nullable: true });
-  // table.columns.add("tuthang", Date, { nullable: true });
-  // table.columns.add("tientunguyendong", Float, { nullable: true });
-  // table.columns.add("tienlai", Float, { nullable: true });
-  // table.columns.add("madoituong", NVarChar, { nullable: true });
-  // table.columns.add("tendoituong", NVarChar, { nullable: true });
-  // table.columns.add("tylensnnht", Int, { nullable: true });
-  // table.columns.add("tiennsnnht", Float, { nullable: true });
-  // table.columns.add("tylensdp", Int, { nullable: true });
-  // table.columns.add("tiennsdp", NVarChar, { nullable: true });
+  table.columns.add("sothang", Int, { nullable: true });
+  table.columns.add("tuthang", Date, { nullable: true });
+  table.columns.add("tientunguyendong", Float, { nullable: true });
+  table.columns.add("tienlai", Float, { nullable: true });
+  table.columns.add("madoituong", NVarChar, { nullable: true });
+  table.columns.add("tendoituong", NVarChar, { nullable: true });
+  table.columns.add("tylensnnht", Int, { nullable: true });
+  table.columns.add("tiennsnnht", Float, { nullable: true });
+  table.columns.add("tylensdp", Int, { nullable: true });
+  table.columns.add("tiennsdp", NVarChar, { nullable: true });
 
   table.columns.add("matinh", NVarChar, { nullable: true });
   table.columns.add("tentinh", NVarChar, { nullable: true });
@@ -142,15 +142,15 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("tenbenhvien", NVarChar, { nullable: true });
   table.columns.add("ghichu", NVarChar, { nullable: true });
 
-  // table.columns.add("createdAt", NVarChar, { nullable: true });
-  // table.columns.add("createdBy", NVarChar, { nullable: true });
-  // table.columns.add("updatedAt", NVarChar, { nullable: true });
-  // table.columns.add("updatedBy", NVarChar, { nullable: true });
+  table.columns.add("createdAt", NVarChar, { nullable: true });
+  table.columns.add("createdBy", NVarChar, { nullable: true });
+  table.columns.add("updatedAt", NVarChar, { nullable: true });
+  table.columns.add("updatedBy", NVarChar, { nullable: true });
 
-  // table.columns.add("dotkekhai", NVarChar, { nullable: true });
-  // table.columns.add("kykekhai", NVarChar, { nullable: true });
-  // table.columns.add("ngaykekhai", DateTime, { nullable: true });
-  // table.columns.add("trangthai", Bit, { nullable: true });
+  table.columns.add("dotkekhai", NVarChar, { nullable: true });
+  table.columns.add("kykekhai", NVarChar, { nullable: true });
+  table.columns.add("ngaykekhai", DateTime, { nullable: true });
+  table.columns.add("trangthai", Bit, { nullable: true });
 
   // Tạo số hồ sơ duy nhất
   const maxSoHoSoResult = await pool.request().query(
@@ -262,13 +262,13 @@ router.post("/kekhai-trans", async (req, res) => {
       item.tentinh,
       item.maquanhuyen,
       item.tenquanhuyen,
-      item.maxaphuong,
-      item.tenxaphuong,
-      item.tothon,
-      item.benhvientinh,
-      item.mabenhvien,
-      item.tenbenhvien,
-      item.ghichu,
+      // item.maxaphuong,
+      // item.tenxaphuong,
+      // item.tothon,
+      // item.benhvientinh,
+      // item.mabenhvien,
+      // item.tenbenhvien,
+      // item.ghichu,
 
       // item.createdAt,
       // item.createdBy,
