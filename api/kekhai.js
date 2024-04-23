@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { pool } = require("../database/dbinfo");
-const sql = require("mssql");
+const {Table, NVarChar, Int, Float} = require("mssql");
 
 // add ke khai
 router.post("/add-kekhai", async (req, res) => {
@@ -82,122 +82,52 @@ router.post("/add-kekhai", async (req, res) => {
   }
 });
 
-
 // tạo kê khai mới
-router.post("/add-kekhai-transaction", async (req, res) => {
-  let transaction = null; // Để kiểm soát giao dịch nếu xảy ra lỗi
+router.post("/add-kekhaisohoso", async (req, res) => {
+  const { items } = req.body; // Dữ liệu đầu vào là một mảng 'items'
 
   try {
-    // Đảm bảo kết nối trước khi bắt đầu giao dịch
-    await pool.connect();
+    await pool.connect(); // Đảm bảo đã kết nối
 
-    // Bắt đầu một giao dịch
-    transaction = new sql.Transaction(pool);
+    // Tạo yêu cầu từ pool
+    const request = pool.request();
 
-    await transaction.begin(); // Bắt đầu giao dịch
+    // Tạo bảng kiểu 'KekhaiTableType'
+    const table = new Table("KekhaiTableType"); // Sử dụng định nghĩa Table có sẵn
+    table.create = true;
 
-    const request = new sql.Request(transaction);
+    // Thêm cột và kiểu dữ liệu cho bảng
+    table.columns.add("sohoso", NVarChar);
+    table.columns.add("matochuc", NVarChar);
+    table.columns.add("tentochuc", NVarChar);
+    table.columns.add("madaily", NVarChar);
+    table.columns.add("tendaily", NVarChar);
+    table.columns.add("masobhxh", NVarChar);
 
-    // Tạo số hồ sơ duy nhất
-    const maxSoHoSoResult = await request.query(
-      "SELECT MAX(sohoso) as max_so_ho_so FROM kekhai"
-    );
-    const newSoHoSo =
-      (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
+    // Thêm dữ liệu vào kiểu bảng
+    items.forEach((item) => {
+      table.rows.add(
+        item.sohoso,
+        item.matochuc,
+        item.tentochuc,
+        item.madaily,
+        item.tendaily,
+        item.masobhxh,
+      );
+    });
 
-    // Chèn tất cả các mục với cùng số hồ sơ
-    const insertQuery = `
-      INSERT INTO kekhai (
-        sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
-        maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs, sotien,	
-        tylengansachdiaphuong, hotrokhac, tungay, heso, tyledong, muctiendong,	
-        maphuongthucdong, tenphuongthucdong, sothang, tuthang, tientunguyendong, tienlai, madoituong,	
-        tendoiduong, tylensnnht, tiennsnnht, tylensdp, tiennsdp, matinh, tentinh, maquanhuyen, tenquanhuyen,	
-        maxaphuong, tenxaphuong, benhvientinh, mabenhvien, tenbenhvien, tothon, ghichu,	
-        createdAt, createdBy, updatedAt, updatedBy, dotkekhai, kykekhai, ngaykekhai, trangthai
-      ) VALUES 
-    `;
+    // Sử dụng stored procedure để chèn dữ liệu
+    await request
+      .input("data", table) // Sử dụng dữ liệu từ bảng đã định nghĩa
+      .execute("sp_InsertKekhai");
 
-    const values = req.body
-      .map((item) => {
-        return `(
-          ${newSoHoSo},
-          '${item.matochuc}',
-          '${item.tentochuc}',
-          '${item.madaily}',
-          '${item.tendaily}',
-          '${item.maloaihinh}',
-          '${item.tenloaihinh}',
-          '${item.hoten}',
-          '${item.masobhxh}',
-          '${item.cccd}',
-          '${item.dienthoai}',
-          '${item.maphuongan}',
-          '${item.tenphuongan}',
-          '${item.ngaysinh}',
-          '${item.gioitinh}',
-          '${item.nguoithu}',
-          '${item.tienluongcs}',
-          '${item.sotien}',
-          '${item.tylengansachdiaphuong}',
-          '${item.hotrokhac}',
-          '${item.tungay}',
-          '${item.heso}',
-          '${item.tyledong}',
-          '${item.muctiendong}',
-          '${item.maphuongthucdong}',
-          '${item.tenphuongthucdong}',
-          '${item.sothang}',
-          '${item.tuthang}',
-          '${item.tientunguyendong}',
-          '${item.tienlai}',
-          '${item.madoituong}',
-          '${item.tendoiduong}',
-          '${item.tylensnnht}',
-          '${item.tiennsnnht}',
-          '${item.tylensdp}',
-          '${item.tiennsdp}',
-          '${item.matinh}',
-          '${item.tentinh}',
-          '${item.maquanhuyen}',
-          '${item.tenquanhuyen}',
-          '${item.maxaphuong}',
-          '${item.tenxaphuong}',
-          '${item.benhvientinh}',
-          '${item.mabenhvien}',
-          '${item.tenbenhvien}',
-          '${item.tothon}',
-          '${item.ghichu}',
-          '${item.createdAt}',
-          '${item.createdBy}',
-          '${item.updatedAt}',
-          '${item.updatedBy}',
-          '${item.dotkekhai}',
-          '${item.kykekhai}',
-          '${item.ngaykekhai}',
-          '${item.trangthai}'
-
-        )`;
-      })
-      .join(",");
-
-    // Thực hiện truy vấn chèn
-    await request.query(insertQuery + values);
-
-    // Xác nhận giao dịch
-    await transaction.commit();
-
-    res.json({ success: true, sohoso: newSoHoSo });
+    res.json({ success: true });
   } catch (error) {
-    // Nếu có lỗi, hoàn tác giao dịch
-    if (transaction) {
-      await transaction.rollback();
-    }
+    console.error("Lỗi:", error);
     res.status(500).json({ error: error.message });
   } finally {
-    // Đóng kết nối
     if (pool.connected) {
-      await pool.close();
+      await pool.close(); // Đóng kết nối sau khi hoàn thành
     }
   }
 });
@@ -239,7 +169,9 @@ router.get("/getalldskkwithmalh", async (req, res) => {
       .request()
       .input("maloaihinh", req.query.maloaihinh)
       .input("madaily", req.query.madaily)
-      .query(`SELECT * FROM kekhai where maloaihinh=@maloaihinh and madaily=@madaily`);
+      .query(
+        `SELECT * FROM kekhai where maloaihinh=@maloaihinh and madaily=@madaily`
+      );
     const kekhai = result.recordset;
     res.json(kekhai);
   } catch (error) {
@@ -256,7 +188,9 @@ router.get("/getallkekhaiwithuser", async (req, res) => {
       .request()
       .input("maloaihinh", req.query.maloaihinh)
       .input("madaily", req.query.madaily)
-      .query(`SELECT * FROM kekhai where madaily=@madaily and maloaihinh=@maloaihinh`);
+      .query(
+        `SELECT * FROM kekhai where madaily=@madaily and maloaihinh=@maloaihinh`
+      );
     const kekhai = result.recordset;
     res.json(kekhai);
   } catch (error) {
@@ -274,7 +208,9 @@ router.get("/hskekhaifromtotungay", async (req, res) => {
       .input("madaily", req.query.madaily)
       .input("tungay", req.query.tungay)
       .input("denngay", req.query.denngay)
-      .query(`select * from kekhai where maloaihinh=@maloaihinh and madaily=@madaily and tungay between @tungay and @denngay`);
+      .query(
+        `select * from kekhai where maloaihinh=@maloaihinh and madaily=@madaily and tungay between @tungay and @denngay`
+      );
     const kekhai = result.recordset;
     res.json(kekhai);
   } catch (error) {
