@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { pool } = require("../database/dbinfo");
+const sql = require("mssql");
 
 // add ke khai
 router.post("/add-kekhai", async (req, res) => {
