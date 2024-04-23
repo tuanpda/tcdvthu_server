@@ -37,6 +37,7 @@ app.use('/api/danhmucs', require('./api/danhmucs'));
 // app.use('/api/nodemailer', require('./api/nodemailer'));
 app.use('/api/kekhai', require('./api/kekhai'));
 app.use('/api/tochucdvt', require('./api/tochucdvt'));
+app.use('/api/nguoihuong', require('./api/nguoihuong'));
 
 app.listen(process.env.PORT, () => {
     console.log(`Server started running on ${process.env.PORT} for ${process.env.NODE_ENV}`);
