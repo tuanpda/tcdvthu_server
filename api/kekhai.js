@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { pool } = require("../database/dbinfo");
-const {Table, NVarChar, Int, Float} = require("mssql");
+const { Table, NVarChar, Int, Float, Transaction } = require("mssql");
 
 // add ke khai
 router.post("/add-kekhai", async (req, res) => {
@@ -83,48 +83,68 @@ router.post("/add-kekhai", async (req, res) => {
 });
 
 router.post("/kekhai-trans", async (req, res) => {
-    // console.log(req.body);
+  // console.log(req.body);
+  let transaction = null;
+  const data = req.body;
 
-    const data = req.body
+  const table = new Table("kekhaitest");
+  table.create = false;
 
-    const table = new Table("kekhaitest");
-    table.create = false;
+  table.columns.add("sohoso", NVarChar, { nullable: true });
+  table.columns.add("matochuc", NVarChar, { nullable: true });
+  table.columns.add("tentochuc", NVarChar, { nullable: true });
+  table.columns.add("madaily", NVarChar, { nullable: true });
+  table.columns.add("tendaily", NVarChar, { nullable: true });
+  table.columns.add("masobhxh", NVarChar, { nullable: true });
 
-    table.columns.add("sohoso", NVarChar, { nullable: true });
-    table.columns.add("matochuc", NVarChar, { nullable: true });
-    table.columns.add("tentochuc", NVarChar, { nullable: true });
-    table.columns.add("madaily", NVarChar, { nullable: true });
-    table.columns.add("tendaily", NVarChar, { nullable: true });
-    table.columns.add("masobhxh", NVarChar, { nullable: true });
+  for (let j = 0; j < data.length; j += 1) {
+    table.rows.add(
+      data[j].sohoso,
+      data[j].matochuc,
+      data[j].tentochuc,
+      data[j].madaily,
+      data[j].tendaily,
+      data[j].masobhxh
+    );
+  }
 
-    for (let j = 0; j < data.length; j += 1) {
-      console.log(data[j].sohoso);
-      table.rows.add(
-        data[j].sohoso,
-        data[j].matochuc,
-        data[j].tentochuc,
-        data[j].madaily,
-        data[j].tendaily,
-        data[j].masobhxh,
-      );
-    }
+  try {
+    // bắt đầu kết nối
+    await pool.connect();
 
-    try {
-      await pool.connect();
+    // Bắt đầu giao dịch
+    transaction = new Transaction(pool);
+    await transaction.begin();
 
-      const results = await pool.request().bulk(table);
-      console.log(`rows affected ${results.rowsAffected}`);
-      console.log(results);
-    } catch (error) {
-      return res.status(400).json({
-        status: "error",
-        error,
-      });
-    }
+    // Chèn dữ liệu sử dụng giao dịch
+    const request = transaction.request();
+    const results = await request.bulk(table);
+    // const results = await pool.request().bulk(table);
+
+    // Commit giao dịch nếu không có lỗi
+    await transaction.commit();
+
+    console.log(`rows affected ${results.rowsAffected}`);
+    console.log(results);
 
     res.status(200).json({
-      status: "succes",
+      status: "success",
     });
+  } catch (error) {
+    // Nếu có lỗi, hoàn tác giao dịch
+    if (transaction) {
+      await transaction.rollback(); // Hoàn tác giao dịch
+    }
+
+    res.status(500).json({
+      status: "error",
+      error: error.message,
+    });
+  } finally {
+    if (pool.connected) {
+      await pool.close(); // Đóng kết nối
+    }
+  }
 });
 
 // danh sách kê khai all
