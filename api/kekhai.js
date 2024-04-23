@@ -175,6 +175,13 @@ router.post("/kekhai-trans", async (req, res) => {
   data.forEach((item) => {
     console.log(item.tienluongcs);
     console.log(item.sotien);
+    console.log(item.tylengansachdiaphuong);
+    console.log(item.hotrokhac);
+    console.log(item.tungay);
+    console.log(item.heso);
+    console.log(item.tyledong);
+    console.log(item.muctiendong);
+
     table.rows.add(
       newSoHoSo,
       item.matochuc,
