@@ -100,18 +100,18 @@ router.post("/kekhai-trans", async (req, res) => {
     //console.log(rows.length);
 
     for (let j = 0; j < data.length; j += 1) {
-      console.log(data[j]);
-      table.rows.add(
-        sohoso,
-        matochuc,
-        tentochuc,
-        madaily,
-        tendaily,
-        masobhxh,
-      );
+      console.log(data[j].sohoso);
+      // table.rows.add(
+      //   sohoso,
+      //   matochuc,
+      //   tentochuc,
+      //   madaily,
+      //   tendaily,
+      //   masobhxh,
+      // );
     }
 
-    console.log(table);
+    // console.log(table);
     // try {
     //   await pool.connect();
 
