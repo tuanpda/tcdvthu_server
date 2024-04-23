@@ -191,11 +191,11 @@ router.post("/kekhai-trans", async (req, res) => {
       item.tylengansachdiaphuong,
       item.hotrokhac,
       item.tungay,
-      item.heso, // undefined
-      item.tyledong,
-      item.muctiendong,
-      item.maphuongthucdong,
-      item.tenphuongthucdong,
+      // item.heso, // undefined
+      // item.tyledong,
+      // item.muctiendong,
+      // item.maphuongthucdong,
+      // item.tenphuongthucdong,
 
       // item.sothang,
       // item.tuthang,
