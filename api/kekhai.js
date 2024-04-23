@@ -154,7 +154,7 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("trangthai", Bit, { nullable: true });
 
   // Tạo số hồ sơ duy nhất
-  const maxSoHoSoResult = await request.query(
+  const maxSoHoSoResult = await pool.request().query(
     "SELECT MAX(sohoso) as max_so_ho_so FROM kekhai"
   );
   const newSoHoSo =
