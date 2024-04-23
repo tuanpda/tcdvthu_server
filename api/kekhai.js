@@ -111,12 +111,12 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("tienluongcs", Float, { nullable: true });
   table.columns.add("sotien", Float, { nullable: true });
 
-  // table.columns.add("tylengansachdiaphuong", Int, { nullable: true });
-  // table.columns.add("hotrokhac", Int, { nullable: true });
-  // table.columns.add("tungay", Date, { nullable: true });
-  // table.columns.add("heso", Int, { nullable: true });
-  // table.columns.add("tyledong", Int, { nullable: true });
-  // table.columns.add("muctiendong", Float, { nullable: true });
+  table.columns.add("tylengansachdiaphuong", Int, { nullable: true });
+  table.columns.add("hotrokhac", Int, { nullable: true });
+  table.columns.add("tungay", Date, { nullable: true });
+  table.columns.add("heso", Int, { nullable: true });
+  table.columns.add("tyledong", Int, { nullable: true });
+  table.columns.add("muctiendong", Float, { nullable: true });
   // table.columns.add("maphuongthucdong", NVarChar, { nullable: true });
   // table.columns.add("tenphuongthucdong", NVarChar, { nullable: true });
 
@@ -197,12 +197,12 @@ router.post("/kekhai-trans", async (req, res) => {
       item.tienluongcs,
       item.sotien,
 
-      // item.tylengansachdiaphuong,
-      // item.hotrokhac,
-      // item.tungay,
-      // item.heso, // undefined
-      // item.tyledong,
-      // item.muctiendong,
+      item.tylengansachdiaphuong,
+      item.hotrokhac,
+      item.tungay,
+      item.heso, // undefined
+      item.tyledong,
+      item.muctiendong,
       // item.maphuongthucdong,
       // item.tenphuongthucdong,
 
