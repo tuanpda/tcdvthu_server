@@ -118,7 +118,7 @@ router.post("/add-kekhai-transaction", async (req, res) => {
       ) VALUES 
     `;
 
-    const values = req.body.items
+    const values = req.body
       .map((item) => {
         return `(
           ${newSoHoSo},
