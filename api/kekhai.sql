@@ -24,7 +24,6 @@ CREATE TABLE [dbo].[kekhai](
 	[tylengansachdiaphuong] [int] NULL,
 	[hotrokhac] [int] NULL,
 	[tungay] [date] NULL,
-	[heso] [int] NULL,
 	[tyledong] [int] NULL,
 	[muctiendong] [float] NULL,
 	[maphuongthucdong] [nvarchar](255) NULL,
