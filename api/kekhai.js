@@ -85,41 +85,42 @@ router.post("/add-kekhai", async (req, res) => {
 router.post("/kekhai-trans", async (req, res) => {
     console.log(req.body);
 
-    // const data = req.body
+    const data = req.body
 
-    // const table = new Table("kekhaitest");
-    // table.create = false;
+    const table = new Table("kekhaitest");
+    table.create = false;
 
-    // table.columns.add("sohoso", NVarChar, { nullable: true });
-    // table.columns.add("matochuc", NVarChar, { nullable: true });
-    // table.columns.add("tentochuc", NVarChar, { nullable: true });
-    // table.columns.add("madaily", NVarChar, { nullable: true });
-    // table.columns.add("tendaily", NVarChar, { nullable: true });
-    // table.columns.add("masobhxh", NVarChar, { nullable: true });
+    table.columns.add("sohoso", NVarChar, { nullable: true });
+    table.columns.add("matochuc", NVarChar, { nullable: true });
+    table.columns.add("tentochuc", NVarChar, { nullable: true });
+    table.columns.add("madaily", NVarChar, { nullable: true });
+    table.columns.add("tendaily", NVarChar, { nullable: true });
+    table.columns.add("masobhxh", NVarChar, { nullable: true });
 
-    // //console.log(rows.length);
+    //console.log(rows.length);
 
-    // for (let j = 0; j < data.length; j += 1) {
-    //   table.rows.add(
-    //     rows[j][0],
-    //     rows[j][1],
-    //     rows[j][2],
-    //     rows[j][3],
-    //     rows[j][4],
-    //     rows[j][5],
-    //     rows[j][6],
-    //     rows[j][7],
-    //     rows[j][8],
-    //     rows[j][9],
-    //     rows[j][10],
-    //     rows[j][11],
-    //     rows[j][12],
-    //     rows[j][13],
-    //     rows[j][14],
-    //     nguoiimport,
-    //     ngayimport
-    //   );
-    // }
+    for (let j = 0; j < data.length; j += 1) {
+      console.log(data[j]);
+      // table.rows.add(
+      //   rows[j][0],
+      //   rows[j][1],
+      //   rows[j][2],
+      //   rows[j][3],
+      //   rows[j][4],
+      //   rows[j][5],
+      //   rows[j][6],
+      //   rows[j][7],
+      //   rows[j][8],
+      //   rows[j][9],
+      //   rows[j][10],
+      //   rows[j][11],
+      //   rows[j][12],
+      //   rows[j][13],
+      //   rows[j][14],
+      //   nguoiimport,
+      //   ngayimport
+      // );
+    }
 
     // try {
     //   await pool.connect();
@@ -134,9 +135,9 @@ router.post("/kekhai-trans", async (req, res) => {
     //   });
     // }
 
-    // res.status(200).json({
-    //   status: "succes",
-    // });
+    res.status(200).json({
+      status: "succes",
+    });
 });
 
 // danh sách kê khai all
