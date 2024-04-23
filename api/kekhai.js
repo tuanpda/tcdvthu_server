@@ -189,11 +189,11 @@ router.post("/kekhai-trans", async (req, res) => {
       item.cccd,
       item.dienthoai,
 
-      item.maphuongan,
-      item.tenphuongan,
-      item.nguoithu,
-      item.tienluongcs,
-      item.sotien,
+      // item.maphuongan,
+      // item.tenphuongan,
+      // item.nguoithu,
+      // item.tienluongcs,
+      // item.sotien,
 
       // item.tylengansachdiaphuong,
       // item.hotrokhac,
