@@ -81,6 +81,60 @@ router.post("/add-kekhai", async (req, res) => {
   }
 });
 
+
+// tạo kê khai mới
+router.post("/add-kekhai-transaction", async (req, res) => {
+  console.log(req.body);
+  // try {
+  //   // Dữ liệu từ frontend
+  //   const items = req.body;
+
+  //   if (!Array.isArray(items)) {
+  //     return res.status(400).json({ error: "Invalid data format. 'items' must be an array." });
+  //   }
+
+  //   // Bắt đầu một giao dịch
+  //   const transaction = new sql.Transaction(pool);
+
+  //   await transaction.begin(); // Bắt đầu giao dịch
+
+  //   const request = new sql.Request(transaction);
+
+  //   // Tạo số hồ sơ duy nhất
+  //   const maxSoHoSoResult = await request.query("SELECT MAX(sohoso) as max_so_ho_so FROM kekhai");
+  //   const newSoHoSo = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
+
+  //   // Chèn tất cả các item với cùng số hồ sơ
+  //   const insertQuery = `
+  //     INSERT INTO kekhai (sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
+  //       maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs, sotien,	
+  //       tylengansachdiaphuong, hotrokhac, tungay, heso, tyledong, muctiendong,	
+  //       maphuongthucdong, tenphuongthucdong, sothang, tuthang, tientunguyendong, tienlai, madoituong,	
+  //       tendoiduong, tylensnnht, tiennsnnht, tylensdp, tiennsdp, matinh, tentinh, maquanhuyen, tenquanhuyen,	
+  //       maxaphuong, tenxaphuong, benhvientinh, mabenhvien, tenbenhvien, muchuongbhyt, tothon, ghichu,	
+  //       createdAt, createdBy, updatedAt, updatedBy) 
+  //     VALUES `;
+
+  //   // Tạo giá trị cho tất cả các dòng với cùng số hồ sơ
+  //   const values = items.map((item) => {
+  //     return `(${newSoHoSo}, '${item.matochuc}', '${item.tentochuc}', '${item.madaily}', '${item.tendaily}', '${item.maloaihinh}', '${item.tenloaihinh}', '${item.hoten}', '${item.masobhxh}', '${item.cccd}', '${item.dienthoai}', '${item.maphuongan}', '${item.tenphuongan}', '${item.ngaysinh}', '${item.gioitinh}', '${item.nguoithu}', '${item.tienluongcs}', '${item.sotien}', '${item.tylengansachdiaphuong}', '${item.hotrokhac}', '${item.tungay}', '${item.heso}', '${item.tyledong}', '${item.muctiendong}', '${item.maphuongthucdong}', '${item.tenphuongthucdong}', '${item.sothang}', '${item.tuthang}', '${item.tientunguyendong}', '${item.tienlai}', '${item.madoituong}', '${item.tendoiduong}', '${item.tylensnnht}', '${item.tiennsnnht}', '${item.tylensdp}', '${item.tiennsdp}', '${item.matinh}', '${item.tentinh}', '${item.maquanhuyen}', '${item.tenquanhuyen}', '${item.maxaphuong}', '${item.tenxaphuong}', '${item.benhvientinh}', '${item.mabenhvien}', '${item.tenbenhvien}', '${item.muchuongbhyt}', '${item.tothon}', '${item.ghichu}', '${item.createdAt}', '${item.createdBy}', '${item.updatedAt}', '${item.updatedBy}')`;
+  //   }).join(",");
+
+  //   // Chèn tất cả các dòng
+  //   await request.query(insertQuery + values);
+
+  //   // Xác nhận giao dịch
+  //   await transaction.commit();
+
+  //   res.json({ success: true, sohoso: newSoHoSo });
+  // } catch (error) {
+  //   if (transaction) {
+  //     await transaction.rollback(); // Hoàn tác giao dịch nếu có lỗi
+  //   }
+  //   res.status(500).json({ error: error.message });
+  // }
+});
+
 // danh sách kê khai all
 router.get("/all-ds-kekhai", async (req, res) => {
   try {
