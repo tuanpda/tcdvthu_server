@@ -174,6 +174,7 @@ router.post("/kekhai-trans", async (req, res) => {
 
   data.forEach((item) => {
     console.log(item.tienluongcs);
+    console.log(item.sotien);
     table.rows.add(
       newSoHoSo,
       item.matochuc,
