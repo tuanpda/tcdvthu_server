@@ -87,7 +87,7 @@ router.post("/kekhai-trans", async (req, res) => {
   let transaction = null;
   const data = req.body;
 
-  const table = new Table("kekhaitest");
+  const table = new Table("kekhai");
   table.create = false;
 
   table.columns.add("sohoso", NVarChar, { nullable: true });
@@ -155,7 +155,7 @@ router.post("/kekhai-trans", async (req, res) => {
 
   // Tạo số hồ sơ duy nhất
   const maxSoHoSoResult = await pool.request().query(
-    "SELECT MAX(sohoso) as max_so_ho_so FROM kekhaitest"
+    "SELECT MAX(sohoso) as max_so_ho_so FROM kekhai"
   );
   const newSoHoSo =
     (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
