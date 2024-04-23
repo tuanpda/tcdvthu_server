@@ -316,11 +316,12 @@ router.post("/kekhai-trans", async (req, res) => {
       status: "error",
       error: error.message,
     });
-  } finally {
-    if (pool.connected) {
-      await pool.close(); // Đóng kết nối
-    }
-  }
+  } 
+  // finally {
+  //   if (pool.connected) {
+  //     await pool.close(); // Đóng kết nối
+  //   }
+  // }
 });
 
 // danh sách kê khai all
