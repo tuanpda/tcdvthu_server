@@ -97,8 +97,6 @@ router.post("/kekhai-trans", async (req, res) => {
     table.columns.add("tendaily", NVarChar, { nullable: true });
     table.columns.add("masobhxh", NVarChar, { nullable: true });
 
-    //console.log(rows.length);
-
     for (let j = 0; j < data.length; j += 1) {
       console.log(data[j].sohoso);
       table.rows.add(
@@ -111,19 +109,18 @@ router.post("/kekhai-trans", async (req, res) => {
       );
     }
 
-    console.log(table);
-    // try {
-    //   await pool.connect();
+    try {
+      await pool.connect();
 
-    //   const results = await pool.request().bulk(table);
-    //   console.log(`rows affected ${results.rowsAffected}`);
-    //   console.log(results);
-    // } catch (error) {
-    //   return res.status(400).json({
-    //     status: "error",
-    //     error,
-    //   });
-    // }
+      const results = await pool.request().bulk(table);
+      console.log(`rows affected ${results.rowsAffected}`);
+      console.log(results);
+    } catch (error) {
+      return res.status(400).json({
+        status: "error",
+        error,
+      });
+    }
 
     res.status(200).json({
       status: "succes",
