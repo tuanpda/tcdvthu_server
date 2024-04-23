@@ -130,17 +130,17 @@ router.post("/kekhai-trans", async (req, res) => {
   // table.columns.add("tylensdp", Int, { nullable: true });
   // table.columns.add("tiennsdp", NVarChar, { nullable: true });
 
-  // table.columns.add("matinh", NVarChar, { nullable: true });
-  // table.columns.add("tentinh", NVarChar, { nullable: true });
-  // table.columns.add("maquanhuyen", NVarChar, { nullable: true });
-  // table.columns.add("tenquanhuyen", NVarChar, { nullable: true });
-  // table.columns.add("maxaphuong", NVarChar, { nullable: true });
-  // table.columns.add("tenxaphuong", NVarChar, { nullable: true });
-  // table.columns.add("tothon", NVarChar, { nullable: true });
-  // table.columns.add("benhvientinh", NVarChar, { nullable: true });
-  // table.columns.add("mabenhvien", NVarChar, { nullable: true });
-  // table.columns.add("tenbenhvien", NVarChar, { nullable: true });
-  // table.columns.add("ghichu", NVarChar, { nullable: true });
+  table.columns.add("matinh", NVarChar, { nullable: true });
+  table.columns.add("tentinh", NVarChar, { nullable: true });
+  table.columns.add("maquanhuyen", NVarChar, { nullable: true });
+  table.columns.add("tenquanhuyen", NVarChar, { nullable: true });
+  table.columns.add("maxaphuong", NVarChar, { nullable: true });
+  table.columns.add("tenxaphuong", NVarChar, { nullable: true });
+  table.columns.add("tothon", NVarChar, { nullable: true });
+  table.columns.add("benhvientinh", NVarChar, { nullable: true });
+  table.columns.add("mabenhvien", NVarChar, { nullable: true });
+  table.columns.add("tenbenhvien", NVarChar, { nullable: true });
+  table.columns.add("ghichu", NVarChar, { nullable: true });
 
   // table.columns.add("createdAt", NVarChar, { nullable: true });
   // table.columns.add("createdBy", NVarChar, { nullable: true });
@@ -187,7 +187,7 @@ router.post("/kekhai-trans", async (req, res) => {
     console.log(item.tientunguyendong);
     console.log(item.tienlai);
     console.log(item.madoituong);
-    console.log(item.tendoiduong); 
+    console.log(item.tendoituong); 
     
     console.log(item.tylensnnht);
     console.log(item.tiennsnnht);
@@ -258,17 +258,17 @@ router.post("/kekhai-trans", async (req, res) => {
       // item.tylensdp,
       // item.tiennsdp,
 
-      // item.matinh,
-      // item.tentinh,
-      // item.maquanhuyen,
-      // item.tenquanhuyen,
-      // item.maxaphuong,
-      // item.tenxaphuong,
-      // item.tothon,
-      // item.benhvientinh,
-      // item.mabenhvien,
-      // item.tenbenhvien,
-      // item.ghichu,
+      item.matinh,
+      item.tentinh,
+      item.maquanhuyen,
+      item.tenquanhuyen,
+      item.maxaphuong,
+      item.tenxaphuong,
+      item.tothon,
+      item.benhvientinh,
+      item.mabenhvien,
+      item.tenbenhvien,
+      item.ghichu,
 
       // item.createdAt,
       // item.createdBy,
