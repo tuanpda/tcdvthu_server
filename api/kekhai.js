@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { pool } = require("../database/dbinfo");
-const { Table, NVarChar, Int, Float, Transaction } = require("mssql");
+const { Table, NVarChar, Int, Float, Transaction, Bit, Date, DateTime } = require("mssql");
 
 // add ke khai
 router.post("/add-kekhai", async (req, res) => {
@@ -87,7 +87,7 @@ router.post("/kekhai-trans", async (req, res) => {
   let transaction = null;
   const data = req.body;
 
-  const table = new Table("kekhaitest");
+  const table = new Table("kekhai");
   table.create = false;
 
   table.columns.add("sohoso", NVarChar, { nullable: true });
@@ -95,37 +95,163 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("tentochuc", NVarChar, { nullable: true });
   table.columns.add("madaily", NVarChar, { nullable: true });
   table.columns.add("tendaily", NVarChar, { nullable: true });
-  table.columns.add("masobhxh", NVarChar, { nullable: true });
+  table.columns.add("maloaihinh", NVarChar, { nullable: true });
+  table.columns.add("tenloaihinh", NVarChar, { nullable: true });
 
-  for (let j = 0; j < data.length; j += 1) {
+  table.columns.add("masobhxh", NVarChar, { nullable: true });
+  table.columns.add("hoten", NVarChar, { nullable: true });
+  table.columns.add("ngaysinh", Date, { nullable: true });
+  table.columns.add("gioitinh", Bit, { nullable: true });
+  table.columns.add("cccd", NVarChar, { nullable: true });
+  table.columns.add("dienthoai", NVarChar, { nullable: true });
+
+  table.columns.add("maphuongan", NVarChar, { nullable: true });
+  table.columns.add("tenphuongan", NVarChar, { nullable: true });
+  table.columns.add("nguoithu", Int, { nullable: true });
+  table.columns.add("tienluongcs", Float, { nullable: true });
+  table.columns.add("sotien", Float, { nullable: true });
+
+  table.columns.add("tylengansachdiaphuong", Int, { nullable: true });
+  table.columns.add("hotrokhac", Int, { nullable: true });
+  table.columns.add("tungay", Date, { nullable: true });
+  table.columns.add("heso", Int, { nullable: true });
+  table.columns.add("tyledong", Int, { nullable: true });
+  table.columns.add("muctiendong", Float, { nullable: true });
+  table.columns.add("maphuongthucdong", NVarChar, { nullable: true });
+  table.columns.add("tenphuongthucdong", NVarChar, { nullable: true });
+
+  table.columns.add("sothang", Int, { nullable: true });
+  table.columns.add("tuthang", Date, { nullable: true });
+  table.columns.add("tientunguyendong", Float, { nullable: true });
+  table.columns.add("tienlai", Float, { nullable: true });
+  table.columns.add("madoituong", NVarChar, { nullable: true });
+  table.columns.add("tendoiduong", NVarChar, { nullable: true });
+  table.columns.add("tylensnnht", Int, { nullable: true });
+  table.columns.add("tiennsnnht", Float, { nullable: true });
+  table.columns.add("tylensdp", Int, { nullable: true });
+  table.columns.add("tiennsdp", NVarChar, { nullable: true });
+
+  table.columns.add("matinh", NVarChar, { nullable: true });
+  table.columns.add("tentinh", NVarChar, { nullable: true });
+  table.columns.add("maquanhuyen", NVarChar, { nullable: true });
+  table.columns.add("tenquanhuyen", NVarChar, { nullable: true });
+  table.columns.add("maxaphuong", NVarChar, { nullable: true });
+  table.columns.add("tenxaphuong", NVarChar, { nullable: true });
+  table.columns.add("tothon", NVarChar, { nullable: true });
+  table.columns.add("benhvientinh", NVarChar, { nullable: true });
+  table.columns.add("mabenhvien", NVarChar, { nullable: true });
+  table.columns.add("tenbenhvien", NVarChar, { nullable: true });
+  table.columns.add("ghichu", NVarChar, { nullable: true });
+
+  table.columns.add("createdAt", NVarChar, { nullable: true });
+  table.columns.add("createdBy", NVarChar, { nullable: true });
+  table.columns.add("updatedAt", NVarChar, { nullable: true });
+  table.columns.add("updatedBy", NVarChar, { nullable: true });
+
+  table.columns.add("dotkekhai", NVarChar, { nullable: true });
+  table.columns.add("kykekhai", NVarChar, { nullable: true });
+  table.columns.add("ngaykekhai", DateTime, { nullable: true });
+  table.columns.add("trangthai", Bit, { nullable: true });
+
+
+  // for (let j = 0; j < data.length; j += 1) {
+  //   table.rows.add(
+  //     data[j].sohoso,
+  //     data[j].matochuc,
+  //     data[j].tentochuc,
+  //     data[j].madaily,
+  //     data[j].tendaily,
+  //     data[j].masobhxh
+  //   );
+  // }
+
+  data.forEach((item) => {
     table.rows.add(
-      data[j].sohoso,
-      data[j].matochuc,
-      data[j].tentochuc,
-      data[j].madaily,
-      data[j].tendaily,
-      data[j].masobhxh
+      item.sohoso,
+      item.matochuc,
+      item.tentochuc,
+      item.madaily,
+      item.tendaily,
+      item.maloaihinh,
+      item.tenloaihinh,
+
+      item.masobhxh,
+      item.hoten,
+      item.ngaysinh,
+      item.gioitinh,
+      item.cccd,
+      item.dienthoai,
+
+      item.maphuongan,
+      item.tenphuongan,
+      item.nguoithu,
+      item.tienluongcs,
+      item.sotien,
+
+      item.tylengansachdiaphuong,
+      item.hotrokhac,
+      item.tungay,
+      item.heso,
+      item.tyledong,
+      item.muctiendong,
+      item.maphuongthucdong,
+      item.tenphuongthucdong,
+
+      item.sothang,
+      item.tuthang,
+      item.tientunguyendong,
+      item.tienlai,
+      item.madoituong,
+      item.tendoiduong,
+      item.tylensnnht,
+      item.tiennsnnht,
+      item.tylensdp,
+      item.tiennsdp,
+
+      item.matinh,
+      item.tentinh,
+      item.maquanhuyen,
+      item.tenquanhuyen,
+      item.maxaphuong,
+      item.tenxaphuong,
+      item.tothon,
+      item.benhvientinh,
+      item.mabenhvien,
+      item.tenbenhvien,
+      item.ghichu,
+
+      item.createdAt,
+      item.createdBy,
+      item.updatedAt,
+      item.updatedBy,
+
+      item.dotkekhai,
+      item.kykekhai,
+      item.ngaykekhai,
+      item.trangthai,
     );
-  }
+  });
+
+  console.log(table);
 
   try {
     // bắt đầu kết nối
     await pool.connect();
 
-    // Bắt đầu giao dịch
-    transaction = new Transaction(pool);
-    await transaction.begin();
+    // // Bắt đầu giao dịch
+    // transaction = new Transaction(pool);
+    // await transaction.begin();
 
-    // Chèn dữ liệu sử dụng giao dịch
-    const request = transaction.request();
-    const results = await request.bulk(table);
-    // const results = await pool.request().bulk(table);
+    // // Chèn dữ liệu sử dụng giao dịch
+    // const request = transaction.request();
+    // const results = await request.bulk(table);
+    // // const results = await pool.request().bulk(table);
 
-    // Commit giao dịch nếu không có lỗi
-    await transaction.commit();
+    // // Commit giao dịch nếu không có lỗi
+    // await transaction.commit();
 
-    console.log(`rows affected ${results.rowsAffected}`);
-    console.log(results);
+    // console.log(`rows affected ${results.rowsAffected}`);
+    // console.log(results);
 
     res.status(200).json({
       status: "success",
