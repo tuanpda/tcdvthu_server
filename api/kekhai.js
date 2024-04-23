@@ -153,6 +153,13 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("ngaykekhai", DateTime, { nullable: true });
   table.columns.add("trangthai", Bit, { nullable: true });
 
+  // Tạo số hồ sơ duy nhất
+  const maxSoHoSoResult = await request.query(
+    "SELECT MAX(sohoso) as max_so_ho_so FROM kekhai"
+  );
+  const newSoHoSo =
+    (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
+
 
   // for (let j = 0; j < data.length; j += 1) {
   //   table.rows.add(
@@ -167,7 +174,7 @@ router.post("/kekhai-trans", async (req, res) => {
 
   data.forEach((item) => {
     table.rows.add(
-      item.sohoso,
+      newSoHoSo,
       item.matochuc,
       item.tentochuc,
       item.madaily,
