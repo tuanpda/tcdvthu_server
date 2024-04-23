@@ -124,10 +124,10 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("tienlai", Float, { nullable: true });
   table.columns.add("madoituong", NVarChar, { nullable: true });
   table.columns.add("tendoituong", NVarChar, { nullable: true });
-  table.columns.add("tylensnnht", Int, { nullable: true });
-  table.columns.add("tiennsnnht", Float, { nullable: true });
-  table.columns.add("tylensdp", Int, { nullable: true });
-  table.columns.add("tiennsdp", Float, { nullable: true });
+  // table.columns.add("tylensnnht", Int, { nullable: true });
+  // table.columns.add("tiennsnnht", Float, { nullable: true });
+  // table.columns.add("tylensdp", Int, { nullable: true });
+  // table.columns.add("tiennsdp", Float, { nullable: true });
 
   // table.columns.add("matinh", NVarChar, { nullable: true });
   // table.columns.add("tentinh", NVarChar, { nullable: true });
@@ -251,10 +251,10 @@ router.post("/kekhai-trans", async (req, res) => {
       item.tienlai,
       item.madoituong,
       item.tendoituong,
-      item.tylensnnht,
-      item.tiennsnnht,
-      item.tylensdp,
-      item.tiennsdp,
+      // item.tylensnnht,
+      // item.tiennsnnht,
+      // item.tylensdp,
+      // item.tiennsdp,
 
       // item.matinh,
       // item.tentinh,
