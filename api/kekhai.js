@@ -238,20 +238,20 @@ router.post("/kekhai-trans", async (req, res) => {
     // bắt đầu kết nối
     await pool.connect();
 
-    // // Bắt đầu giao dịch
-    // transaction = new Transaction(pool);
-    // await transaction.begin();
+    // Bắt đầu giao dịch
+    transaction = new Transaction(pool);
+    await transaction.begin();
 
-    // // Chèn dữ liệu sử dụng giao dịch
-    // const request = transaction.request();
-    // const results = await request.bulk(table);
-    // // const results = await pool.request().bulk(table);
+    // Chèn dữ liệu sử dụng giao dịch
+    const request = transaction.request();
+    const results = await request.bulk(table);
+    // const results = await pool.request().bulk(table);
 
-    // // Commit giao dịch nếu không có lỗi
-    // await transaction.commit();
+    // Commit giao dịch nếu không có lỗi
+    await transaction.commit();
 
-    // console.log(`rows affected ${results.rowsAffected}`);
-    // console.log(results);
+    console.log(`rows affected ${results.rowsAffected}`);
+    console.log(results);
 
     res.status(200).json({
       status: "success",
