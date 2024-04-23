@@ -109,7 +109,7 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("tenphuongan", NVarChar, { nullable: true });
   table.columns.add("nguoithu", Int, { nullable: true });
   table.columns.add("tienluongcs", Float, { nullable: true });
-  // table.columns.add("sotien", Float, { nullable: true });
+  table.columns.add("sotien", Float, { nullable: true });
 
   // table.columns.add("tylengansachdiaphuong", Int, { nullable: true });
   // table.columns.add("hotrokhac", Int, { nullable: true });
@@ -194,7 +194,7 @@ router.post("/kekhai-trans", async (req, res) => {
       item.tenphuongan,
       item.nguoithu,
       item.tienluongcs,
-      // item.sotien,
+      item.sotien,
 
       // item.tylengansachdiaphuong,
       // item.hotrokhac,
@@ -240,7 +240,7 @@ router.post("/kekhai-trans", async (req, res) => {
     );
   });
 
-  console.log(table);
+  // console.log(table);
 
   try {
     // bắt đầu kết nối
