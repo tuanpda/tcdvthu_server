@@ -83,7 +83,7 @@ router.post("/add-kekhai", async (req, res) => {
 });
 
 router.post("/kekhai-trans", async (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
   let transaction = null;
   const data = req.body;
 
@@ -173,6 +173,7 @@ router.post("/kekhai-trans", async (req, res) => {
   // }
 
   data.forEach((item) => {
+    console.log(item.tienluongcs);
     table.rows.add(
       newSoHoSo,
       item.matochuc,
