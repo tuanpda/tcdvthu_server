@@ -119,38 +119,38 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("maphuongthucdong", NVarChar, { nullable: true });
   table.columns.add("tenphuongthucdong", NVarChar, { nullable: true });
 
-  // table.columns.add("sothang", Int, { nullable: true });
-  // table.columns.add("tuthang", Date, { nullable: true });
-  // table.columns.add("tientunguyendong", Float, { nullable: true });
-  // table.columns.add("tienlai", Float, { nullable: true });
-  // table.columns.add("madoituong", NVarChar, { nullable: true });
-  // table.columns.add("tendoiduong", NVarChar, { nullable: true });
-  // table.columns.add("tylensnnht", Int, { nullable: true });
-  // table.columns.add("tiennsnnht", Float, { nullable: true });
-  // table.columns.add("tylensdp", Int, { nullable: true });
-  // table.columns.add("tiennsdp", NVarChar, { nullable: true });
+  table.columns.add("sothang", Int, { nullable: true });
+  table.columns.add("tuthang", Date, { nullable: true });
+  table.columns.add("tientunguyendong", Float, { nullable: true });
+  table.columns.add("tienlai", Float, { nullable: true });
+  table.columns.add("madoituong", NVarChar, { nullable: true });
+  table.columns.add("tendoituong", NVarChar, { nullable: true });
+  table.columns.add("tylensnnht", Int, { nullable: true });
+  table.columns.add("tiennsnnht", Float, { nullable: true });
+  table.columns.add("tylensdp", Int, { nullable: true });
+  table.columns.add("tiennsdp", NVarChar, { nullable: true });
 
-  // table.columns.add("matinh", NVarChar, { nullable: true });
-  // table.columns.add("tentinh", NVarChar, { nullable: true });
-  // table.columns.add("maquanhuyen", NVarChar, { nullable: true });
-  // table.columns.add("tenquanhuyen", NVarChar, { nullable: true });
-  // table.columns.add("maxaphuong", NVarChar, { nullable: true });
-  // table.columns.add("tenxaphuong", NVarChar, { nullable: true });
-  // table.columns.add("tothon", NVarChar, { nullable: true });
-  // table.columns.add("benhvientinh", NVarChar, { nullable: true });
-  // table.columns.add("mabenhvien", NVarChar, { nullable: true });
-  // table.columns.add("tenbenhvien", NVarChar, { nullable: true });
-  // table.columns.add("ghichu", NVarChar, { nullable: true });
+  table.columns.add("matinh", NVarChar, { nullable: true });
+  table.columns.add("tentinh", NVarChar, { nullable: true });
+  table.columns.add("maquanhuyen", NVarChar, { nullable: true });
+  table.columns.add("tenquanhuyen", NVarChar, { nullable: true });
+  table.columns.add("maxaphuong", NVarChar, { nullable: true });
+  table.columns.add("tenxaphuong", NVarChar, { nullable: true });
+  table.columns.add("tothon", NVarChar, { nullable: true });
+  table.columns.add("benhvientinh", NVarChar, { nullable: true });
+  table.columns.add("mabenhvien", NVarChar, { nullable: true });
+  table.columns.add("tenbenhvien", NVarChar, { nullable: true });
+  table.columns.add("ghichu", NVarChar, { nullable: true });
 
-  // table.columns.add("createdAt", NVarChar, { nullable: true });
-  // table.columns.add("createdBy", NVarChar, { nullable: true });
-  // table.columns.add("updatedAt", NVarChar, { nullable: true });
-  // table.columns.add("updatedBy", NVarChar, { nullable: true });
+  table.columns.add("createdAt", NVarChar, { nullable: true });
+  table.columns.add("createdBy", NVarChar, { nullable: true });
+  table.columns.add("updatedAt", NVarChar, { nullable: true });
+  table.columns.add("updatedBy", NVarChar, { nullable: true });
 
-  // table.columns.add("dotkekhai", NVarChar, { nullable: true });
-  // table.columns.add("kykekhai", NVarChar, { nullable: true });
-  // table.columns.add("ngaykekhai", DateTime, { nullable: true });
-  // table.columns.add("trangthai", Bit, { nullable: true });
+  table.columns.add("dotkekhai", NVarChar, { nullable: true });
+  table.columns.add("kykekhai", NVarChar, { nullable: true });
+  table.columns.add("ngaykekhai", DateTime, { nullable: true });
+  table.columns.add("trangthai", Bit, { nullable: true });
 
   // Tạo số hồ sơ duy nhất
   const maxSoHoSoResult = await pool.request().query(
@@ -177,11 +177,45 @@ router.post("/kekhai-trans", async (req, res) => {
     console.log(item.tylengansachdiaphuong);
     console.log(item.hotrokhac);
     console.log(item.tungay);
-    console.log(item.heso);
     console.log(item.tyledong);
     console.log(item.muctiendong);
     console.log(item.maphuongthucdong);
     console.log(item.tenphuongthucdong);
+
+    console.log(item.sothang);
+    console.log(item.tuthang);
+    console.log(item.tientunguyendong);
+    console.log(item.tienlai);
+    console.log(item.madoituong);
+    console.log(item.tendoiduong); 
+    
+    console.log(item.tylensnnht);
+    console.log(item.tiennsnnht);
+    console.log(item.tylensdp);
+
+
+    console.log(item.matinh);
+    console.log(item.tentinh);
+    console.log(item.maquanhuyen);
+    console.log(item.tenquanhuyen);
+    console.log(item.maxaphuong);
+    console.log(item.tenxaphuong);
+    console.log(item.tothon);
+
+    console.log(item.benhvientinh);
+    console.log(item.mabenhvien);
+    console.log(item.tenbenhvien);
+    console.log(item.ghichu);
+
+    console.log(item.createdAt);
+    console.log(item.createdBy);
+    console.log(item.updatedAt);
+    console.log(item.updatedBy);
+
+    console.log(item.dotkekhai);
+    console.log(item.kykekhai);
+    console.log(item.ngaykekhai);
+    console.log(item.trangthai);
 
     table.rows.add(
       newSoHoSo,
@@ -213,38 +247,38 @@ router.post("/kekhai-trans", async (req, res) => {
       item.maphuongthucdong,
       item.tenphuongthucdong,
 
-      // item.sothang,
-      // item.tuthang,
-      // item.tientunguyendong,
-      // item.tienlai,
-      // item.madoituong,
-      // item.tendoiduong, // undefined
-      // item.tylensnnht,
-      // item.tiennsnnht,
-      // item.tylensdp,
-      // item.tiennsdp,
+      item.sothang,
+      item.tuthang,
+      item.tientunguyendong,
+      item.tienlai,
+      item.madoituong,
+      item.tendoituong,
+      item.tylensnnht,
+      item.tiennsnnht,
+      item.tylensdp,
+      item.tiennsdp,
 
-      // item.matinh,
-      // item.tentinh,
-      // item.maquanhuyen,
-      // item.tenquanhuyen,
-      // item.maxaphuong,
-      // item.tenxaphuong,
-      // item.tothon,
-      // item.benhvientinh,
-      // item.mabenhvien,
-      // item.tenbenhvien,
-      // item.ghichu,
+      item.matinh,
+      item.tentinh,
+      item.maquanhuyen,
+      item.tenquanhuyen,
+      item.maxaphuong,
+      item.tenxaphuong,
+      item.tothon,
+      item.benhvientinh,
+      item.mabenhvien,
+      item.tenbenhvien,
+      item.ghichu,
 
-      // item.createdAt,
-      // item.createdBy,
-      // item.updatedAt,
-      // item.updatedBy,
+      item.createdAt,
+      item.createdBy,
+      item.updatedAt,
+      item.updatedBy,
 
-      // item.dotkekhai,
-      // item.kykekhai,
-      // item.ngaykekhai,
-      // item.trangthai,
+      item.dotkekhai,
+      item.kykekhai,
+      item.ngaykekhai,
+      item.trangthai,
     );
   });
 
