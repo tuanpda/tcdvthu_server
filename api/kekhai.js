@@ -116,8 +116,8 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("tungay", Date, { nullable: true });
   table.columns.add("tyledong", Int, { nullable: true });
   table.columns.add("muctiendong", Float, { nullable: true });
-  // table.columns.add("maphuongthucdong", NVarChar, { nullable: true });
-  // table.columns.add("tenphuongthucdong", NVarChar, { nullable: true });
+  table.columns.add("maphuongthucdong", NVarChar, { nullable: true });
+  table.columns.add("tenphuongthucdong", NVarChar, { nullable: true });
 
   // table.columns.add("sothang", Int, { nullable: true });
   // table.columns.add("tuthang", Date, { nullable: true });
@@ -208,8 +208,8 @@ router.post("/kekhai-trans", async (req, res) => {
       item.tungay,
       item.tyledong,
       item.muctiendong,
-      // item.maphuongthucdong,
-      // item.tenphuongthucdong,
+      item.maphuongthucdong,
+      item.tenphuongthucdong,
 
       // item.sothang,
       // item.tuthang,
