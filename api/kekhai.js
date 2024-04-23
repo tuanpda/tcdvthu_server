@@ -83,7 +83,7 @@ router.post("/add-kekhai", async (req, res) => {
 });
 
 router.post("/kekhai-trans", async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
 
     const data = req.body
 
@@ -101,27 +101,17 @@ router.post("/kekhai-trans", async (req, res) => {
 
     for (let j = 0; j < data.length; j += 1) {
       console.log(data[j]);
-      // table.rows.add(
-      //   rows[j][0],
-      //   rows[j][1],
-      //   rows[j][2],
-      //   rows[j][3],
-      //   rows[j][4],
-      //   rows[j][5],
-      //   rows[j][6],
-      //   rows[j][7],
-      //   rows[j][8],
-      //   rows[j][9],
-      //   rows[j][10],
-      //   rows[j][11],
-      //   rows[j][12],
-      //   rows[j][13],
-      //   rows[j][14],
-      //   nguoiimport,
-      //   ngayimport
-      // );
+      table.rows.add(
+        sohoso,
+        matochuc,
+        tentochuc,
+        madaily,
+        tendaily,
+        masobhxh,
+      );
     }
 
+    console.log(table);
     // try {
     //   await pool.connect();
 
