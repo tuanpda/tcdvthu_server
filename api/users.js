@@ -17,7 +17,7 @@ var storage = multer.diskStorage({
     // đường dẫn máy cơ quan
     // cb(null, "D:\\PROJECT\\TCDVTHU\\client\\static\\avatar");
     // đường dẫn khi deploy máy chủ
-    cb(null, "C:\\TCDVTHU\\client\\static\\avatar");
+    // cb(null, "C:\\TCDVTHU\\client\\static\\avatar");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);
@@ -387,6 +387,7 @@ router.post("/account", upload.single("avatar"), async (req, res) => {
       .input("tendaily", req.body.tendaily)
       .input("nvcongty", req.body.nvcongty)
       .input("diachi", req.body.diachi)
+      .input("masobhxh", req.body.masobhxh)
       .input("cccd", req.body.cccd)
       .input("sodienthoai", req.body.sodienthoai)
       .input("email", req.body.email)
@@ -401,10 +402,10 @@ router.post("/account", upload.single("avatar"), async (req, res) => {
       .input("updatedBy", req.body.updatedBy)
       .input("updatedAt", req.body.updatedAt).query(`
                 INSERT INTO users (matochuc, tentochuc, matinh, tentinh, mahuyen, tenhuyen, maxa, tenxa, madaily, tendaily, nvcongty,
-                  diachi, cccd, sodienthoai, email, username, name, password, role, avatar, active, 
+                  diachi, masobhxh, cccd, sodienthoai, email, username, name, password, role, avatar, active, 
                   createdBy, createdAt, updatedBy, updatedAt) 
                 VALUES (@matochuc, @tentochuc, @matinh, @tentinh, @mahuyen, @tenhuyen, @maxa, @tenxa, @madaily, @tendaily, @nvcongty,
-                  @diachi, @cccd, @sodienthoai, @email, @username, @name, @password, @role, @avatar, @active,
+                  @diachi, @masobhxh, @cccd, @sodienthoai, @email, @username, @name, @password, @role, @avatar, @active,
                   @createdBy, @createdAt, @updatedBy, @updatedAt);
             `);
     const user = req.body;
