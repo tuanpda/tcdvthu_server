@@ -49,7 +49,6 @@ router.post("/add-kekhai", async (req, res) => {
       .input("muctiendong", req.body.muctiendong)
       .input("maphuongthucdong", req.body.maphuongthucdong)
       .input("tenphuongthucdong", req.body.tenphuongthucdong)
-      .input("sothang", req.body.sothang)
       .input("tuthang", req.body.tuthang)
       .input("tientunguyendong", req.body.tientunguyendong)
       .input("tienlai", req.body.tienlai)
@@ -81,14 +80,14 @@ router.post("/add-kekhai", async (req, res) => {
                   INSERT INTO kekhai (sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
                     maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs, sotien,	
                     tylengansachdiaphuong, hotrokhac, tungay, tyledong, muctiendong,	
-                    maphuongthucdong, tenphuongthucdong, sothang, tuthang, tientunguyendong, tienlai, madoituong,	
+                    maphuongthucdong, tenphuongthucdong, tuthang, tientunguyendong, tienlai, madoituong,	
                     tendoiduong, tylensnnht, tiennsnnht, tylensdp, tiennsdp, matinh, tentinh, maquanhuyen, tenquanhuyen,	
                     maxaphuong, tenxaphuong, benhvientinh, mabenhvien, tenbenhvien, tothon, ghichu,	
                     createdAt, createdBy, updatedAt, updatedBy, dotkekhai, kykekhai, ngaykekhai, trangthai) 
                   VALUES (@sohoso, @matochuc, @tentochuc, @madaily, @tendaily, @maloaihinh, @tenloaihinh, @hoten, @masobhxh, @cccd, @dienthoai,	
                     @maphuongan, @tenphuongan, @ngaysinh, @gioitinh, @nguoithu, @tienluongcs, @sotien,	
                     @tylengansachdiaphuong, @hotrokhac, @tungay, @tyledong, @muctiendong,	
-                    @maphuongthucdong, @tenphuongthucdong, @sothang, @tuthang, @tientunguyendong, @tienlai, @madoituong,	
+                    @maphuongthucdong, @tenphuongthucdong, @tuthang, @tientunguyendong, @tienlai, @madoituong,	
                     @tendoiduong, @tylensnnht, @tiennsnnht, @tylensdp, @tiennsdp, @matinh, @tentinh, @maquanhuyen, @tenquanhuyen,	
                     @maxaphuong, @tenxaphuong, @benhvientinh, @mabenhvien, @tenbenhvien, @tothon, @ghichu,	
                     @createdAt, @createdBy, @updatedAt, @updatedBy, @dotkekhai, @kykekhai, @ngaykekhai, @trangthai);
