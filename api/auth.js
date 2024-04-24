@@ -74,8 +74,12 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
     const result = await pool
       .request()
       .input("email", req.body.email)
-      .query(`SELECT email, cccd, masobhxh FROM users where active=1 and email=@email`);
+      .query(
+        `SELECT email FROM users where active=1 and email=@email`
+      );
     const infoAcc = result.recordset;
+    console.log(infoAcc);
+    
     res.json(infoAcc);
   } catch (error) {
     res.status(500).json(error);
