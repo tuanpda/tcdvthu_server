@@ -146,10 +146,10 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("updatedAt", NVarChar, { nullable: true });
   table.columns.add("updatedBy", NVarChar, { nullable: true });
 
-  // table.columns.add("dotkekhai", NVarChar, { nullable: true });
-  // table.columns.add("kykekhai", NVarChar, { nullable: true });
+  table.columns.add("dotkekhai", NVarChar, { nullable: true });
+  table.columns.add("kykekhai", NVarChar, { nullable: true });
   // table.columns.add("ngaykekhai", DateTime, { nullable: true });
-  // table.columns.add("trangthai", Bit, { nullable: true });
+  table.columns.add("trangthai", Bit, { nullable: true });
 
   // Tạo số hồ sơ duy nhất
   const maxSoHoSoResult = await pool.request().query(
@@ -273,10 +273,10 @@ router.post("/kekhai-trans", async (req, res) => {
       item.updatedAt,
       item.updatedBy,
 
-      // item.dotkekhai,
-      // item.kykekhai,
+      item.dotkekhai,
+      item.kykekhai,
       // item.ngaykekhai,
-      // item.trangthai,
+      item.trangthai,
     );
   });
 
