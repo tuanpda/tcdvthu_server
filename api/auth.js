@@ -80,10 +80,9 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
 
     if (result.recordset.length === 0) {
       res.status(404).json({
-        success: 9,
         message: "Email không tồn tại hoặc chưa được kích hoạt",
       });
-      return
+      return;
     }
 
     const user = result.recordset[0];
@@ -93,12 +92,24 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
     if (user.cccd !== req.body.cccd || user.masobhxh !== req.body.masobhxh) {
       // CCCD hoặc masobhxh không khớp
       res.status(400).json({
-        success: 7,
         message: "CCCD hoặc Mã số BHXH không đúng thông tin đã đăng ký",
       });
-      return
+      return;
     }
 
+    if (user.cccd === req.body.cccd && user.masobhxh === req.body.masobhxh) {
+      // Thông tin khớp, gửi mật khẩu mới
+      const newPass = Math.random().toString(36).slice(-8); // Tạo mật khẩu ngẫu nhiên
+      const hashedPass = await bcrypt.hash(newPass, 10);
+
+      await pool
+        .request()
+        .input("email", req.body.cccd)
+        .input("password", hashedPass)
+        .query(`UPDATE users SET password = @password WHERE email = @email`);
+
+      res.json({ success: true, newPass });
+    }
   } catch (error) {
     res.status(500).json(error);
   }
