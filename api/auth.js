@@ -115,6 +115,37 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
   }
 });
 
+
+// kích hoạt user with email
+router.post("/active/user", async (req, res) => {
+  // console.log(req.body);
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .input("email", req.body.email)
+      .query(`SELECT * FROM users WHERE email = @email`);
+    const user = result.recordset[0];
+    // console.log(user);
+    if (user) {
+      await pool
+        .request()
+        .input("email", user.email)
+        .query(
+          `UPDATE users SET
+                  active = 1
+              WHERE email = @email;`
+        );
+    }
+    res.json({
+      success: true,
+      message: "actived success !",
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 /* Tạo user auth kèm token */
 // router.post("/account", upload.single("avatar"), async (req, res) => {
 //   // console.log(req.body);
