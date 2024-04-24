@@ -115,6 +115,21 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
   }
 });
 
+/* Get email */
+router.get("/findemail", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .input("email", req.query.email)
+      .query(`SELECT * FROM users WHERE email = @email`);
+    const email = result.recordset;
+    res.json(email);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 
 // kích hoạt user with email
 router.post("/active/user", async (req, res) => {
