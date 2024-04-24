@@ -1,16 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { pool } = require("../database/dbinfo");
-const {
-  Table,
-  NVarChar,
-  Int,
-  Float,
-  Transaction,
-  Bit,
-  Date,
-  DateTime,
-} = require("mssql");
+const { Table, NVarChar, Int, Float, Transaction, Bit, Date, DateTime } = require("mssql");
 
 // add ke khai
 router.post("/add-kekhai", async (req, res) => {
@@ -131,8 +122,8 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("tuthang", Date, { nullable: true });
   table.columns.add("tientunguyendong", Float, { nullable: true });
   table.columns.add("tienlai", Float, { nullable: true });
-  table.columns.add("madoituong", NVarChar, { nullable: true });
-  table.columns.add("tendoituong", NVarChar, { nullable: true });
+  // table.columns.add("madoituong", NVarChar, { nullable: true });
+  // table.columns.add("tendoituong", NVarChar, { nullable: true });
   table.columns.add("tylensnnht", Int, { nullable: true });
   table.columns.add("tiennsnnht", Float, { nullable: true });
   table.columns.add("tylensdp", Int, { nullable: true });
@@ -144,11 +135,11 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("tenquanhuyen", NVarChar, { nullable: true });
   table.columns.add("maxaphuong", NVarChar, { nullable: true });
   table.columns.add("tenxaphuong", NVarChar, { nullable: true });
-  table.columns.add("tothon", NVarChar, { nullable: true });
+  // table.columns.add("tothon", NVarChar, { nullable: true });
   table.columns.add("benhvientinh", NVarChar, { nullable: true });
-  table.columns.add("mabenhvien", NVarChar, { nullable: true });
-  table.columns.add("tenbenhvien", NVarChar, { nullable: true });
-  table.columns.add("ghichu", NVarChar, { length: "max", nullable: true });
+  // table.columns.add("mabenhvien", NVarChar, { nullable: true });
+  // table.columns.add("tenbenhvien", NVarChar, { nullable: true });
+  // table.columns.add("ghichu", NVarChar, { length: "max", nullable: true });
 
   table.columns.add("createdAt", NVarChar, { nullable: true });
   table.columns.add("createdBy", NVarChar, { nullable: true });
@@ -161,12 +152,70 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("trangthai", Bit, { nullable: true });
 
   // Tạo số hồ sơ duy nhất
-  const maxSoHoSoResult = await pool
-    .request()
-    .query("SELECT MAX(sohoso) as max_so_ho_so FROM kekhai");
-  const newSoHoSo = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
+  const maxSoHoSoResult = await pool.request().query(
+    "SELECT MAX(sohoso) as max_so_ho_so FROM kekhai"
+  );
+  const newSoHoSo =
+    (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
+
+
+  // for (let j = 0; j < data.length; j += 1) {
+  //   table.rows.add(
+  //     data[j].sohoso,
+  //     data[j].matochuc,
+  //     data[j].tentochuc,
+  //     data[j].madaily,
+  //     data[j].tendaily,
+  //     data[j].masobhxh
+  //   );
+  // }
 
   data.forEach((item) => {
+    console.log(item.tienluongcs);
+    console.log(item.sotien);
+    console.log(item.tylengansachdiaphuong);
+    console.log(item.hotrokhac);
+    console.log(item.tungay);
+    console.log(item.tyledong);
+    console.log(item.muctiendong);
+    console.log(item.maphuongthucdong);
+    console.log(item.tenphuongthucdong);
+
+    console.log(item.sothang);
+    console.log(item.tuthang);
+    console.log(item.tientunguyendong);
+    console.log(item.tienlai);
+    console.log(item.madoituong);
+    console.log(item.tendoituong); 
+    
+    console.log(item.tylensnnht);
+    console.log(item.tiennsnnht);
+    console.log(item.tylensdp);
+
+
+    console.log(item.matinh);
+    console.log(item.tentinh);
+    console.log(item.maquanhuyen);
+    console.log(item.tenquanhuyen);
+    console.log(item.maxaphuong);
+    console.log(item.tenxaphuong);
+    console.log(item.tothon);
+
+    console.log(item.benhvientinh);
+    console.log(item.mabenhvien);
+    console.log(item.tenbenhvien);
+    console.log(item.ghichu);
+
+    console.log(item.createdAt);
+    console.log(item.createdBy);
+    console.log(item.updatedAt);
+    console.log(item.updatedBy);
+
+    console.log(item.dotkekhai);
+    console.log(item.kykekhai);
+    console.log(item.ngaykekhai);
+    console.log(item.trangthai);
+
     table.rows.add(
       newSoHoSo,
       item.matochuc,
@@ -200,8 +249,8 @@ router.post("/kekhai-trans", async (req, res) => {
       item.tuthang,
       item.tientunguyendong,
       item.tienlai,
-      item.madoituong,
-      item.tendoituong,
+      // item.madoituong,
+      // item.tendoituong,
       item.tylensnnht,
       item.tiennsnnht,
       item.tylensdp,
@@ -213,11 +262,11 @@ router.post("/kekhai-trans", async (req, res) => {
       item.tenquanhuyen,
       item.maxaphuong,
       item.tenxaphuong,
-      item.tothon,
+      // item.tothon,
       item.benhvientinh,
-      item.mabenhvien,
-      item.tenbenhvien,
-      item.ghichu,
+      // item.mabenhvien,
+      // item.tenbenhvien,
+      // item.ghichu,
 
       item.createdAt,
       item.createdBy,
@@ -227,7 +276,7 @@ router.post("/kekhai-trans", async (req, res) => {
       item.dotkekhai,
       item.kykekhai,
       item.ngaykekhai,
-      item.trangthai
+      item.trangthai,
     );
   });
 
@@ -238,16 +287,16 @@ router.post("/kekhai-trans", async (req, res) => {
     await pool.connect();
 
     // Bắt đầu giao dịch
-    // transaction = new Transaction(pool);
-    // await transaction.begin();
+    transaction = new Transaction(pool);
+    await transaction.begin();
 
     // Chèn dữ liệu sử dụng giao dịch
-    // const request = transaction.request();
-    // const results = await request.bulk(table);
-    const results = await pool.request().bulk(table);
+    const request = transaction.request();
+    const results = await request.bulk(table);
+    // const results = await pool.request().bulk(table);
 
     // Commit giao dịch nếu không có lỗi
-    // await transaction.commit();
+    await transaction.commit();
 
     console.log(`rows affected ${results.rowsAffected}`);
     console.log(results);
@@ -257,18 +306,20 @@ router.post("/kekhai-trans", async (req, res) => {
     });
   } catch (error) {
     // Nếu có lỗi, hoàn tác giao dịch
-    // if (transaction) {
-    //   await transaction.rollback(); // Hoàn tác giao dịch
-    // }
+    if (transaction) {
+      await transaction.rollback(); // Hoàn tác giao dịch
+    }
+
     res.status(500).json({
       status: "error",
       error: error.message,
     });
-  } finally {
-    if (pool.connected) {
-      await pool.close(); // Đóng kết nối
-    }
-  }
+  } 
+  // finally {
+  //   if (pool.connected) {
+  //     await pool.close(); // Đóng kết nối
+  //   }
+  // }
 });
 
 // danh sách kê khai all
