@@ -1,14 +1,30 @@
 const express = require("express");
 const router = express.Router();
 const { pool } = require("../database/dbinfo");
-const { Table, NVarChar, Int, Float, Transaction, Bit, Date, DateTime } = require("mssql");
+const {
+  Table,
+  NVarChar,
+  Int,
+  Float,
+  Transaction,
+  Bit,
+  Date,
+  DateTime,
+} = require("mssql");
 
 // add ke khai
 router.post("/add-kekhai", async (req, res) => {
   try {
     await pool.connect();
+    // Tạo số hồ sơ duy nhất
+    const maxSoHoSoResult = await pool
+      .request()
+      .query("SELECT MAX(sohoso) as max_so_ho_so FROM kekhai");
+    const newSoHoSo = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
+
     const result = await pool
       .request()
+      .input("sohoso", newSoHoSo)
       .input("matochuc", req.body.matochuc)
       .input("tentochuc", req.body.tentochuc)
       .input("madaily", req.body.madaily)
@@ -59,21 +75,24 @@ router.post("/add-kekhai", async (req, res) => {
       .input("createdAt", req.body.createdAt)
       .input("createdBy", req.body.createdBy)
       .input("updatedAt", req.body.updatedAt)
-      .input("updatedBy", req.body.updatedBy).query(`
-                  INSERT INTO kekhai (matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
+      .input("dotkekhai", req.body.dotkekhai)
+      .input("kykekhai", req.body.kykekhai)
+      .input("ngaykekhai", req.body.ngaykekhai)
+      .input("trangthai", req.body.trangthai).query(`
+                  INSERT INTO kekhai (sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
                     maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs, sotien,	
                     tylengansachdiaphuong, hotrokhac, tungay, heso, tyledong, muctiendong,	
                     maphuongthucdong, tenphuongthucdong, sothang, tuthang, tientunguyendong, tienlai, madoituong,	
                     tendoiduong, tylensnnht, tiennsnnht, tylensdp, tiennsdp, matinh, tentinh, maquanhuyen, tenquanhuyen,	
                     maxaphuong, tenxaphuong, benhvientinh, mabenhvien, tenbenhvien, muchuongbhyt, tothon, ghichu,	
-                    createdAt, createdBy, updatedAt, updatedBy) 
-                  VALUES (@matochuc, @tentochuc, @madaily, @tendaily, @maloaihinh, @tenloaihinh, @hoten, @masobhxh, @cccd, @dienthoai,	
+                    createdAt, createdBy, updatedAt, updatedBy, dotkekhai, kykekhai, ngaykekhai, trangthai) 
+                  VALUES (@sohoso, @matochuc, @tentochuc, @madaily, @tendaily, @maloaihinh, @tenloaihinh, @hoten, @masobhxh, @cccd, @dienthoai,	
                     @maphuongan, @tenphuongan, @ngaysinh, @gioitinh, @nguoithu, @tienluongcs, @sotien,	
                     @tylengansachdiaphuong, @hotrokhac, @tungay, @heso, @tyledong, @muctiendong,	
                     @maphuongthucdong, @tenphuongthucdong, @sothang, @tuthang, @tientunguyendong, @tienlai, @madoituong,	
                     @tendoiduong, @tylensnnht, @tiennsnnht, @tylensdp, @tiennsdp, @matinh, @tentinh, @maquanhuyen, @tenquanhuyen,	
                     @maxaphuong, @tenxaphuong, @benhvientinh, @mabenhvien, @tenbenhvien, @muchuongbhyt, @tothon, @ghichu,	
-                    @createdAt, @createdBy, @updatedAt, @updatedBy);
+                    @createdAt, @createdBy, @updatedAt, @updatedBy, @dotkekhai, @kykekhai, @ngaykekhai, @trangthai);
               `);
     const kekhai = req.body;
     res.json(kekhai);
@@ -152,12 +171,10 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("trangthai", Bit, { nullable: true });
 
   // Tạo số hồ sơ duy nhất
-  const maxSoHoSoResult = await pool.request().query(
-    "SELECT MAX(sohoso) as max_so_ho_so FROM kekhai"
-  );
-  const newSoHoSo =
-    (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
-
+  const maxSoHoSoResult = await pool
+    .request()
+    .query("SELECT MAX(sohoso) as max_so_ho_so FROM kekhai");
+  const newSoHoSo = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
 
   // for (let j = 0; j < data.length; j += 1) {
   //   table.rows.add(
@@ -186,12 +203,11 @@ router.post("/kekhai-trans", async (req, res) => {
     console.log(item.tientunguyendong);
     console.log(item.tienlai);
     console.log(item.madoituong);
-    console.log(item.tendoituong); 
-    
+    console.log(item.tendoituong);
+
     console.log(item.tylensnnht);
     console.log(item.tiennsnnht);
     console.log(item.tylensdp);
-
 
     console.log(item.matinh);
     console.log(item.tentinh);
@@ -276,7 +292,7 @@ router.post("/kekhai-trans", async (req, res) => {
       item.dotkekhai,
       item.kykekhai,
       item.ngaykekhai,
-      item.trangthai,
+      item.trangthai
     );
   });
 
@@ -314,7 +330,7 @@ router.post("/kekhai-trans", async (req, res) => {
       status: "error",
       error: error.message,
     });
-  } 
+  }
   // finally {
   //   if (pool.connected) {
   //     await pool.close(); // Đóng kết nối
