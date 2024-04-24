@@ -106,8 +106,11 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
     const user = result.recordset[0];
     console.log(user);
 
+    console.log(user.cccd === req.body.cccd);
+    console.log(user.cccd === req.body.cccd);
+
     // check CCCD và masobhxh
-    if (user.cccd !== req.body.cccd || user.masobhxh !== req.body.masobh) {
+    if (user.cccd !== req.body.cccd || user.masobhxh !== req.body.masobhxh) {
       // CCCD hoặc masobhxh không khớp
       res.status(400).json({
         message: "CCCD hoặc Mã số BHXH không đúng thông tin đã đăng ký",
@@ -115,7 +118,7 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
       return;
     }
 
-    if (user.cccd === req.body.cccd && user.masobhxh === req.body.masobh) {
+    if (user.cccd === req.body.cccd && user.masobhxh === req.body.masobhxh) {
       // Thông tin khớp, gửi mật khẩu mới
       const newPass = Math.random().toString(36).slice(-8); // Tạo mật khẩu ngẫu nhiên
       const hashedPass = await bcrypt.hash(newPass, 10);
