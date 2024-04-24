@@ -75,7 +75,7 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
       .request()
       .input("email", req.body.email)
       .query(
-        `SELECT email, cccd, masobhxh FROM users where active=1 and email=@email`
+        `SELECT email, cccd, masobhxh FROM users where active=1 and email=@email and role<>1`
       );
 
     if (result.recordset.length === 0) {
