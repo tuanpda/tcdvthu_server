@@ -41,7 +41,6 @@ router.post("/add-kekhai", async (req, res) => {
       .input("gioitinh", req.body.gioitinh)
       .input("nguoithu", req.body.nguoithu)
       .input("tienluongcs", req.body.tienluongcs)
-      .input("sotien", req.body.sotien)
       .input("tylengansachdiaphuong", req.body.tylengansachdiaphuong)
       .input("hotrokhac", req.body.hotrokhac)
       .input("tungay", req.body.tungay)
@@ -69,7 +68,6 @@ router.post("/add-kekhai", async (req, res) => {
       .input("benhvientinh", req.body.benhvientinh)
       .input("mabenhvien", req.body.mabenhvien)
       .input("tenbenhvien", req.body.tenbenhvien)
-      .input("muchuongbhyt", req.body.muchuongbhyt)
       .input("tothon", req.body.tothon)
       .input("ghichu", req.body.ghichu)
       .input("createdAt", req.body.createdAt)
@@ -81,18 +79,18 @@ router.post("/add-kekhai", async (req, res) => {
       .input("ngaykekhai", req.body.ngaykekhai)
       .input("trangthai", req.body.trangthai).query(`
                   INSERT INTO kekhai (sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
-                    maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs, sotien,	
+                    maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs,	
                     tylengansachdiaphuong, hotrokhac, tungay, heso, tyledong, muctiendong,	
                     maphuongthucdong, tenphuongthucdong, sothang, tuthang, tientunguyendong, tienlai, madoituong,	
                     tendoiduong, tylensnnht, tiennsnnht, tylensdp, tiennsdp, matinh, tentinh, maquanhuyen, tenquanhuyen,	
-                    maxaphuong, tenxaphuong, benhvientinh, mabenhvien, tenbenhvien, muchuongbhyt, tothon, ghichu,	
+                    maxaphuong, tenxaphuong, benhvientinh, mabenhvien, tenbenhvien, tothon, ghichu,	
                     createdAt, createdBy, updatedAt, updatedBy, dotkekhai, kykekhai, ngaykekhai, trangthai) 
                   VALUES (@sohoso, @matochuc, @tentochuc, @madaily, @tendaily, @maloaihinh, @tenloaihinh, @hoten, @masobhxh, @cccd, @dienthoai,	
-                    @maphuongan, @tenphuongan, @ngaysinh, @gioitinh, @nguoithu, @tienluongcs, @sotien,	
+                    @maphuongan, @tenphuongan, @ngaysinh, @gioitinh, @nguoithu, @tienluongcs,	
                     @tylengansachdiaphuong, @hotrokhac, @tungay, @heso, @tyledong, @muctiendong,	
                     @maphuongthucdong, @tenphuongthucdong, @sothang, @tuthang, @tientunguyendong, @tienlai, @madoituong,	
                     @tendoiduong, @tylensnnht, @tiennsnnht, @tylensdp, @tiennsdp, @matinh, @tentinh, @maquanhuyen, @tenquanhuyen,	
-                    @maxaphuong, @tenxaphuong, @benhvientinh, @mabenhvien, @tenbenhvien, @muchuongbhyt, @tothon, @ghichu,	
+                    @maxaphuong, @tenxaphuong, @benhvientinh, @mabenhvien, @tenbenhvien, @tothon, @ghichu,	
                     @createdAt, @createdBy, @updatedAt, @updatedBy, @dotkekhai, @kykekhai, @ngaykekhai, @trangthai);
               `);
     const kekhai = req.body;
