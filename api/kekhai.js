@@ -136,8 +136,8 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("maxaphuong", NVarChar, { nullable: true });
   table.columns.add("tenxaphuong", NVarChar, { nullable: true });
   // table.columns.add("tothon", NVarChar, { nullable: true });
-  // table.columns.add("benhvientinh", NVarChar, { nullable: true });
-  // table.columns.add("mabenhvien", NVarChar, { nullable: true });
+  table.columns.add("benhvientinh", NVarChar, { nullable: true });
+  table.columns.add("mabenhvien", NVarChar, { nullable: true });
   // table.columns.add("tenbenhvien", NVarChar, { nullable: true });
   // table.columns.add("ghichu", NVarChar, { nullable: true });
 
@@ -263,8 +263,8 @@ router.post("/kekhai-trans", async (req, res) => {
       item.maxaphuong,
       item.tenxaphuong,
       // item.tothon,
-      // item.benhvientinh,
-      // item.mabenhvien,
+      item.benhvientinh,
+      item.mabenhvien,
       // item.tenbenhvien,
       // item.ghichu,
 
