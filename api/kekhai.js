@@ -20,10 +20,10 @@ router.post("/add-kekhai", async (req, res) => {
     // Tạo số hồ sơ duy nhất
     const maxSoHoSoResult = await pool
       .request()
-      .query("SELECT MAX(sohoso) as max_so_ho_so FROM kekhai");
+      .query("SELECT MAX(_id) as max_so_ho_so FROM kekhai");
     const newSoHoSo = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
     const soHoso = newSoHoSo + '/' + req.body.nvt_masobhxh + '/' + req.body.nvt_cccd
-    console.log(soHoso);
+    // console.log(soHoso);
 
     const result = await pool
       .request()
