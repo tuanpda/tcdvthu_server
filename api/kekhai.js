@@ -139,7 +139,7 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("benhvientinh", NVarChar, { nullable: true });
   // table.columns.add("mabenhvien", NVarChar, { nullable: true });
   // table.columns.add("tenbenhvien", NVarChar, { nullable: true });
-  // table.columns.add("ghichu", NVarChar, { nullable: true });
+  table.columns.add("ghichu", NVarChar, { nullable: true });
 
   // table.columns.add("createdAt", NVarChar, { nullable: true });
   // table.columns.add("createdBy", NVarChar, { nullable: true });
@@ -265,7 +265,7 @@ router.post("/kekhai-trans", async (req, res) => {
       // item.tothon,
       item.benhvientinh,
       // item.mabenhvien,
-      item.tenbenhvien,
+      // item.tenbenhvien,
       item.ghichu,
 
       // item.createdAt,
