@@ -139,12 +139,12 @@ router.post("/kekhai-trans", async (req, res) => {
   table.columns.add("benhvientinh", NVarChar, { nullable: true });
   // table.columns.add("mabenhvien", NVarChar, { nullable: true });
   // table.columns.add("tenbenhvien", NVarChar, { nullable: true });
-  table.columns.add("ghichu", NVarChar, { length: "max", nullable: true });
+  // table.columns.add("ghichu", NVarChar, { length: "max", nullable: true });
 
-  // table.columns.add("createdAt", NVarChar, { nullable: true });
-  // table.columns.add("createdBy", NVarChar, { nullable: true });
-  // table.columns.add("updatedAt", NVarChar, { nullable: true });
-  // table.columns.add("updatedBy", NVarChar, { nullable: true });
+  table.columns.add("createdAt", NVarChar, { nullable: true });
+  table.columns.add("createdBy", NVarChar, { nullable: true });
+  table.columns.add("updatedAt", NVarChar, { nullable: true });
+  table.columns.add("updatedBy", NVarChar, { nullable: true });
 
   // table.columns.add("dotkekhai", NVarChar, { nullable: true });
   // table.columns.add("kykekhai", NVarChar, { nullable: true });
@@ -266,12 +266,12 @@ router.post("/kekhai-trans", async (req, res) => {
       item.benhvientinh,
       // item.mabenhvien,
       // item.tenbenhvien,
-      item.ghichu,
+      // item.ghichu,
 
-      // item.createdAt,
-      // item.createdBy,
-      // item.updatedAt,
-      // item.updatedBy,
+      item.createdAt,
+      item.createdBy,
+      item.updatedAt,
+      item.updatedBy,
 
       // item.dotkekhai,
       // item.kykekhai,
