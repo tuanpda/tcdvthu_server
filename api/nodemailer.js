@@ -26,7 +26,7 @@ myOAuth2Client.setCredentials({
 // Tạo API /email/send với method POST
 router.post('/email/send', async (req, res) => {
     try {
-        // console.log(req.body);
+        console.log(req.body);
         // Lấy thông tin gửi lên từ client qua body
         // const { email, subject, content } = req.body
         const email = req.body.email
@@ -37,8 +37,8 @@ router.post('/email/send', async (req, res) => {
          * Lấy AccessToken từ RefreshToken (bởi vì Access Token cứ một khoảng thời gian ngắn sẽ bị hết hạn)
          * Vì vậy mỗi lần sử dụng Access Token, chúng ta sẽ generate ra một thằng mới là chắc chắn nhất.
          */
-        // console.log('start access');
-        // console.log(myOAuth2Client);
+        console.log('start access');
+        console.log(myOAuth2Client);
         const myAccessTokenObject = await myOAuth2Client.getAccessToken()
         // console.log(myAccessTokenObject);
         // Access Token sẽ nằm trong property 'token' trong Object mà chúng ta vừa get được ở trên

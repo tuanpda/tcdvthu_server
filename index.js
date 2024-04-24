@@ -22,6 +22,7 @@ app.use(bodyParse.json({ limit: '50mb' }));
 app.use(bodyParse.urlencoded({ limit: '50mb', extended: true }));
 
 app.use('/api/auth', require('./api/auth'));
+app.use('/api/nodemailer', require('./api/nodemailer'));
 // app.use('/api/users/account', require('./api/users/account'));
 
 // Middleware xác thực chỉ áp dụng cho các endpoint cần được bảo vệ
