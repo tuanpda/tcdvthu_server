@@ -76,7 +76,7 @@ router.post("/add-kekhai", async (req, res) => {
       .input("createdBy", req.body.createdBy)
       .input("updatedAt", req.body.updatedAt)
       .input("updatedBy", req.body.updatedBy)
-      .input("dotkekhai", req.body.dotkekhai)
+      .input("dotkekhai", newSoHoSo)
       .input("kykekhai", req.body.kykekhai)
       .input("ngaykekhai", req.body.ngaykekhai)
       .input("trangthai", req.body.trangthai).query(`
