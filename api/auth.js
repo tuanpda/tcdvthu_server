@@ -74,13 +74,25 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
     const result = await pool
       .request()
       .input("email", req.body.email)
-      .query(
-        `SELECT email FROM users where active=1 and email=@email`
-      );
-    const infoAcc = result.recordset;
-    console.log(infoAcc);
-    
-    res.json(infoAcc);
+      .query(`SELECT email FROM users where active=1 and email=@email`);
+    const user = result.recordset;
+
+    // không tồn tại
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "Email không tồn tại hoặc chưa được kích hoạt" });
+    }
+
+    // check CCCD và masobhxh
+    if (user.cccd !== req.body.cccd || user.masobhxh !== req.body.masobhxh) {
+      // CCCD hoặc masobhxh không khớp
+      return res.status(400).json({
+        message: "CCCD hoặc Mã số BHXH không đúng thông tin đã đăng ký",
+      });
+    }
+
+    res.json({ success: true });
   } catch (error) {
     res.status(500).json(error);
   }
