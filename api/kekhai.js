@@ -148,7 +148,7 @@ router.post("/kekhai-trans", async (req, res) => {
 
   table.columns.add("dotkekhai", NVarChar, { nullable: true });
   table.columns.add("kykekhai", NVarChar, { nullable: true });
-  // table.columns.add("ngaykekhai", DateTime, { nullable: true });
+  table.columns.add("ngaykekhai", DateTime, { nullable: true });
   table.columns.add("trangthai", Bit, { nullable: true });
 
   // Tạo số hồ sơ duy nhất
@@ -275,7 +275,7 @@ router.post("/kekhai-trans", async (req, res) => {
 
       item.dotkekhai,
       item.kykekhai,
-      // item.ngaykekhai,
+      item.ngaykekhai,
       item.trangthai,
     );
   });
