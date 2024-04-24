@@ -171,50 +171,50 @@ router.post("/kekhai-trans", async (req, res) => {
   // }
 
   data.forEach((item) => {
-    console.log(item.tienluongcs);
-    console.log(item.sotien);
-    console.log(item.tylengansachdiaphuong);
-    console.log(item.hotrokhac);
-    console.log(item.tungay);
-    console.log(item.tyledong);
-    console.log(item.muctiendong);
-    console.log(item.maphuongthucdong);
-    console.log(item.tenphuongthucdong);
+    // console.log(item.tienluongcs);
+    // console.log(item.sotien);
+    // console.log(item.tylengansachdiaphuong);
+    // console.log(item.hotrokhac);
+    // console.log(item.tungay);
+    // console.log(item.tyledong);
+    // console.log(item.muctiendong);
+    // console.log(item.maphuongthucdong);
+    // console.log(item.tenphuongthucdong);
 
-    console.log(item.sothang);
-    console.log(item.tuthang);
-    console.log(item.tientunguyendong);
-    console.log(item.tienlai);
-    console.log(item.madoituong);
-    console.log(item.tendoituong); 
+    // console.log(item.sothang);
+    // console.log(item.tuthang);
+    // console.log(item.tientunguyendong);
+    // console.log(item.tienlai);
+    // console.log(item.madoituong);
+    // console.log(item.tendoituong); 
     
-    console.log(item.tylensnnht);
-    console.log(item.tiennsnnht);
-    console.log(item.tylensdp);
+    // console.log(item.tylensnnht);
+    // console.log(item.tiennsnnht);
+    // console.log(item.tylensdp);
 
 
-    console.log(item.matinh);
-    console.log(item.tentinh);
-    console.log(item.maquanhuyen);
-    console.log(item.tenquanhuyen);
-    console.log(item.maxaphuong);
-    console.log(item.tenxaphuong);
-    console.log(item.tothon);
+    // console.log(item.matinh);
+    // console.log(item.tentinh);
+    // console.log(item.maquanhuyen);
+    // console.log(item.tenquanhuyen);
+    // console.log(item.maxaphuong);
+    // console.log(item.tenxaphuong);
+    // console.log(item.tothon);
 
-    console.log(item.benhvientinh);
-    console.log(item.mabenhvien);
-    console.log(item.tenbenhvien);
-    console.log(item.ghichu);
+    // console.log(item.benhvientinh);
+    // console.log(item.mabenhvien);
+    // console.log(item.tenbenhvien);
+    // console.log(item.ghichu);
 
-    console.log(item.createdAt);
-    console.log(item.createdBy);
-    console.log(item.updatedAt);
-    console.log(item.updatedBy);
+    // console.log(item.createdAt);
+    // console.log(item.createdBy);
+    // console.log(item.updatedAt);
+    // console.log(item.updatedBy);
 
-    console.log(item.dotkekhai);
-    console.log(item.kykekhai);
-    console.log(item.ngaykekhai);
-    console.log(item.trangthai);
+    // console.log(item.dotkekhai);
+    // console.log(item.kykekhai);
+    // console.log(item.ngaykekhai);
+    // console.log(item.trangthai);
 
     table.rows.add(
       newSoHoSo,
