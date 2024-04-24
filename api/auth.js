@@ -87,14 +87,11 @@ router.post("/access/login", async (req, res, next) => {
 
 router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
   // console.log(req.body);
-  let email = req.body.email;
-  let cccd = req.body.cccd;
-  let masobhxh = req.body.masobh;
   try {
     await pool.connect();
     const result = await pool
       .request()
-      .input("email", email)
+      .input("email", req.body.email)
       .query(
         `SELECT email, cccd, masobhxh FROM users where active=1 and email=@email and role<>1`
       );
@@ -110,7 +107,7 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
     console.log(user);
 
     // check CCCD và masobhxh
-    if (user.cccd !== cccd || user.masobhxh !== masobhxh) {
+    if (user.cccd !== req.body.cccd || user.masobhxh !== req.body.masobh) {
       // CCCD hoặc masobhxh không khớp
       res.status(400).json({
         message: "CCCD hoặc Mã số BHXH không đúng thông tin đã đăng ký",
@@ -118,14 +115,14 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
       return;
     }
 
-    if (user.cccd === cccd && user.masobhxh === masobhxh) {
+    if (user.cccd === req.body.cccd && user.masobhxh === req.body.masobh) {
       // Thông tin khớp, gửi mật khẩu mới
       const newPass = Math.random().toString(36).slice(-8); // Tạo mật khẩu ngẫu nhiên
       const hashedPass = await bcrypt.hash(newPass, 10);
 
       await pool
         .request()
-        .input("email", email)
+        .input("email", req.body.email)
         .input("password", hashedPass)
         .query(`UPDATE users SET password = @password WHERE email = @email`);
 
@@ -145,7 +142,7 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
       <p>* CHÚC BẠN CÓ NHỮNG TRẢI NGHIỆM TỐT NHẤT KHI SỬ DỤNG HỆ THỐNG PHẦN MỀM CỦA CÔNG TY CHÚNG TÔI *</p>
       <p>* CÔNG VIỆC CỦA BẠN - SỨ MỆNH CỦA CHÚNG TÔI *</p>
     `;
-      if (!email || !subject || !content)
+      if (!req.body.email || !subject || !content)
         throw new Error("Please provide email, subject and content!");
       /**
        * Lấy AccessToken từ RefreshToken (bởi vì Access Token cứ một khoảng thời gian ngắn sẽ bị hết hạn)
@@ -172,7 +169,7 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
       });
       // mailOption là những thông tin gửi từ phía client lên thông qua API
       const mailOptions = {
-        to: email, // Gửi đến ai?
+        to: req.body.email, // Gửi đến ai?
         subject: subject, // Tiêu đề email
         html: `<h3>${content}</h3>`, // Nội dung email
       };
