@@ -104,7 +104,7 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
 
       await pool
         .request()
-        .input("email", req.body.cccd)
+        .input("email", req.body.email)
         .input("password", hashedPass)
         .query(`UPDATE users SET password = @password WHERE email = @email`);
 
