@@ -41,10 +41,10 @@ router.post("/add-kekhai", async (req, res) => {
       .input("gioitinh", req.body.gioitinh)
       .input("nguoithu", req.body.nguoithu)
       .input("tienluongcs", req.body.tienluongcs)
+      .input("sotien", req.body.sotien)
       .input("tylengansachdiaphuong", req.body.tylengansachdiaphuong)
       .input("hotrokhac", req.body.hotrokhac)
       .input("tungay", req.body.tungay)
-      .input("heso", req.body.heso)
       .input("tyledong", req.body.tyledong)
       .input("muctiendong", req.body.muctiendong)
       .input("maphuongthucdong", req.body.maphuongthucdong)
@@ -79,15 +79,15 @@ router.post("/add-kekhai", async (req, res) => {
       .input("ngaykekhai", req.body.ngaykekhai)
       .input("trangthai", req.body.trangthai).query(`
                   INSERT INTO kekhai (sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
-                    maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs,	
-                    tylengansachdiaphuong, hotrokhac, tungay, heso, tyledong, muctiendong,	
+                    maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs, sotien,	
+                    tylengansachdiaphuong, hotrokhac, tungay, tyledong, muctiendong,	
                     maphuongthucdong, tenphuongthucdong, sothang, tuthang, tientunguyendong, tienlai, madoituong,	
                     tendoiduong, tylensnnht, tiennsnnht, tylensdp, tiennsdp, matinh, tentinh, maquanhuyen, tenquanhuyen,	
                     maxaphuong, tenxaphuong, benhvientinh, mabenhvien, tenbenhvien, tothon, ghichu,	
                     createdAt, createdBy, updatedAt, updatedBy, dotkekhai, kykekhai, ngaykekhai, trangthai) 
                   VALUES (@sohoso, @matochuc, @tentochuc, @madaily, @tendaily, @maloaihinh, @tenloaihinh, @hoten, @masobhxh, @cccd, @dienthoai,	
-                    @maphuongan, @tenphuongan, @ngaysinh, @gioitinh, @nguoithu, @tienluongcs,	
-                    @tylengansachdiaphuong, @hotrokhac, @tungay, @heso, @tyledong, @muctiendong,	
+                    @maphuongan, @tenphuongan, @ngaysinh, @gioitinh, @nguoithu, @tienluongcs, @sotien,	
+                    @tylengansachdiaphuong, @hotrokhac, @tungay, @tyledong, @muctiendong,	
                     @maphuongthucdong, @tenphuongthucdong, @sothang, @tuthang, @tientunguyendong, @tienlai, @madoituong,	
                     @tendoiduong, @tylensnnht, @tiennsnnht, @tylensdp, @tiennsdp, @matinh, @tentinh, @maquanhuyen, @tenquanhuyen,	
                     @maxaphuong, @tenxaphuong, @benhvientinh, @mabenhvien, @tenbenhvien, @tothon, @ghichu,	
