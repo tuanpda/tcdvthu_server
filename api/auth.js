@@ -83,6 +83,7 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
         success: 9,
         message: "Email không tồn tại hoặc chưa được kích hoạt",
       });
+      return
     }
 
     const user = result.recordset[0];
@@ -95,8 +96,9 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
         success: 7,
         message: "CCCD hoặc Mã số BHXH không đúng thông tin đã đăng ký",
       });
+      return
     }
-    
+
   } catch (error) {
     res.status(500).json(error);
   }
