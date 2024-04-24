@@ -265,8 +265,8 @@ router.post("/kekhai-trans", async (req, res) => {
       // item.tothon,
       item.benhvientinh,
       // item.mabenhvien,
-      // item.tenbenhvien,
-      // item.ghichu,
+      item.tenbenhvien,
+      item.ghichu,
 
       // item.createdAt,
       // item.createdBy,
