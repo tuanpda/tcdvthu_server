@@ -107,7 +107,7 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
     }
 
     const user = result.recordset[0];
-    // console.log(user);
+    console.log(user);
 
     // check CCCD và masobhxh
     if (user.cccd !== cccd || user.masobhxh !== masobhxh) {
