@@ -79,8 +79,7 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
       );
 
     if (result.recordset.length === 0) {
-      return res.status(404).json({
-        isValid: false,
+      res.status(404).json({
         message: "Email không tồn tại hoặc chưa được kích hoạt",
       });
     }
@@ -91,12 +90,10 @@ router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
     // check CCCD và masobhxh
     if (user.cccd !== req.body.cccd || user.masobhxh !== req.body.masobhxh) {
       // CCCD hoặc masobhxh không khớp
-      return res.status(400).json({
+      res.status(400).json({
         message: "CCCD hoặc Mã số BHXH không đúng thông tin đã đăng ký",
       });
     }
-
-    
   } catch (error) {
     res.status(500).json(error);
   }
