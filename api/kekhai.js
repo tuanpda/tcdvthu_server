@@ -14,6 +14,7 @@ const {
 
 // add ke khai
 router.post("/add-kekhai", async (req, res) => {
+  console.log(req.body);
   try {
     await pool.connect();
     // Tạo số hồ sơ duy nhất
