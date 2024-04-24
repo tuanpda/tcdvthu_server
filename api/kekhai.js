@@ -14,7 +14,7 @@ const {
 
 // add ke khai
 router.post("/add-kekhai", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     await pool.connect();
     // Tạo số hồ sơ duy nhất
@@ -22,7 +22,8 @@ router.post("/add-kekhai", async (req, res) => {
       .request()
       .query("SELECT MAX(sohoso) as max_so_ho_so FROM kekhai");
     const newSoHoSo = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
-    newSoHoSo = newSoHoSo + '/' + req.body.nvt_masobhxh + '/' + req.body.nvt_cccd
+    const soHoso = newSoHoSo + '/' + req.body.nvt_masobhxh + '/' + req.body.nvt_cccd
+    console.log(soHoso);
 
     const result = await pool
       .request()
