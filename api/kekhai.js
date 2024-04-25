@@ -105,7 +105,7 @@ router.post("/add-kekhai", async (req, res) => {
 
 // add ke khai chạy theo bộ
 router.post("/add-kekhai-series", async (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
   let dataKekhai = req.body;
   // console.log(dataKekhai);
   try {
@@ -174,7 +174,8 @@ router.post("/add-kekhai-series", async (req, res) => {
         .input("dotkekhai", newSoHoSo)
         .input("kykekhai", item.kykekhai)
         .input("ngaykekhai", item.ngaykekhai)
-        .input("trangthai", item.trangthai).query(`
+        .input("trangthai", item.trangthai)
+        .query(`
                   INSERT INTO kekhai (sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
                     maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs, sotien,	
                     tylengansachdiaphuong, hotrokhac, tungay, tyledong, muctiendong,	
