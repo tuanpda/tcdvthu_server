@@ -124,9 +124,11 @@ router.post("/add-kekhai-series", async (req, res) => {
       .request()
       .query("SELECT MAX(_id) as max_so_ho_so FROM kekhai");
     let maxSohoso = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0);
+    let getNumerDotkekhai = maxSohoso
     // const soHoso = newSoHoSo + "/" + item.nvt_masobhxh + "/" + item.nvt_cccd;
 
     for (const item of dataKekhai) {
+      const soKyDotKeKhai = getNumerDotkekhai
       // Tạo số hồ sơ mới
       const newSoHoSo = maxSohoso + 1;
       maxSohoso++; // Tăng giá trị cho lần tiếp theo
@@ -184,7 +186,7 @@ router.post("/add-kekhai-series", async (req, res) => {
         .input("createdBy", item.createdBy)
         .input("updatedAt", item.updatedAt)
         .input("updatedBy", item.updatedBy)
-        .input("dotkekhai", newSoHoSo)
+        .input("dotkekhai", soKyDotKeKhai)
         .input("kykekhai", item.kykekhai)
         .input("ngaykekhai", item.ngaykekhai)
         .input("trangthai", item.trangthai).query(`
@@ -207,7 +209,7 @@ router.post("/add-kekhai-series", async (req, res) => {
       // Lưu thông tin cần thiết vào danh sách
       listSuccess.push({
         sohoso: soHoso,
-        dotkekhai: newSoHoSo,
+        dotkekhai: soKyDotKeKhai,
         kykekhai: item.kykekhai,
         ngaykekhai: item.ngaykekhai,
         trangthai: item.trangthai,
