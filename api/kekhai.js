@@ -118,6 +118,9 @@ router.post("/add-kekhai-series", async (req, res) => {
     transaction = new Transaction(pool);
     await transaction.begin();
 
+    // Tạo mảng để lưu thông tin cần trả lại sau khi thành công
+    const listSuccess = [];
+
     for (const item of dataKekhai) {
       // Tạo số hồ sơ duy nhất
       const maxSoHoSoResult = await pool
@@ -126,7 +129,7 @@ router.post("/add-kekhai-series", async (req, res) => {
       const newSoHoSo = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
       const soHoso = newSoHoSo + "/" + item.nvt_masobhxh + "/" + item.nvt_cccd;
 
-      await transaction
+      const result = await transaction
         .request()
         .input("sohoso", soHoso)
         .input("matochuc", item.matochuc)
@@ -196,11 +199,28 @@ router.post("/add-kekhai-series", async (req, res) => {
                     @maxaphuong, @tenxaphuong, @benhvientinh, @mabenhvien, @tenbenhvien, @tothon, @ghichu,	
                     @createdAt, @createdBy, @updatedAt, @updatedBy, @dotkekhai, @kykekhai, @ngaykekhai, @trangthai);
               `);
+
+      // Lưu thông tin cần thiết vào danh sách
+      listSuccess.push({
+        sohoso: item.sohoso,
+        dotkekhai: item.dotkekhai,
+        kykekhai: item.kykekhai,
+        ngaykekhai: item.ngaykekhai,
+        trangthai: item.trangthai,
+        hoten: item.hoten,
+        masobhxhxh: item.masobhxhxh,
+        cccd: item.cccd,
+        dienthoai: item.dienthoai,
+      });
     }
 
     // Nếu thành công, hoàn thành giao dịch
     await transaction.commit();
-    res.json({ success: true, message: "Data inserted successfully" });
+    res.json({
+      success: true,
+      message: "Data inserted successfully",
+      data: listSuccess,
+    });
   } catch (error) {
     // Nếu có lỗi, hoàn tác giao dịch
     if (transaction) {
