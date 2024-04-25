@@ -12,7 +12,7 @@ const {
   DateTime,
 } = require("mssql");
 
-// add ke khai
+// add ke khai chạy lẻ từng dòng
 router.post("/add-kekhai", async (req, res) => {
   // console.log(req.body);
   try {
@@ -100,6 +100,98 @@ router.post("/add-kekhai", async (req, res) => {
   } catch (error) {
     res.status(500).json(error);
   }
+});
+
+// add ke khai chạy theo bộ
+router.post("/add-kekhai-series", async (req, res) => {
+  // console.log(req.body);
+  let dataKekhai = req.body
+  console.log(dataKekhai);
+  // try {
+  //   await pool.connect();
+  //   // Tạo số hồ sơ duy nhất
+  //   const maxSoHoSoResult = await pool
+  //     .request()
+  //     .query("SELECT MAX(_id) as max_so_ho_so FROM kekhai");
+  //   const newSoHoSo = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
+  //   const soHoso = newSoHoSo + '/' + req.body.nvt_masobhxh + '/' + req.body.nvt_cccd
+  //   // console.log(soHoso);
+
+  //   const result = await pool
+  //     .request()
+  //     .input("sohoso", soHoso)
+  //     .input("matochuc", req.body.matochuc)
+  //     .input("tentochuc", req.body.tentochuc)
+  //     .input("madaily", req.body.madaily)
+  //     .input("tendaily", req.body.tendaily)
+  //     .input("maloaihinh", req.body.maloaihinh)
+  //     .input("tenloaihinh", req.body.tenloaihinh)
+  //     .input("hoten", req.body.hoten)
+  //     .input("masobhxh", req.body.masobhxh)
+  //     .input("cccd", req.body.cccd)
+  //     .input("dienthoai", req.body.dienthoai)
+  //     .input("maphuongan", req.body.maphuongan)
+  //     .input("tenphuongan", req.body.tenphuongan)
+  //     .input("ngaysinh", req.body.ngaysinh)
+  //     .input("gioitinh", req.body.gioitinh)
+  //     .input("nguoithu", req.body.nguoithu)
+  //     .input("tienluongcs", req.body.tienluongcs)
+  //     .input("sotien", req.body.sotien)
+  //     .input("tylengansachdiaphuong", req.body.tylengansachdiaphuong)
+  //     .input("hotrokhac", req.body.hotrokhac)
+  //     .input("tungay", req.body.tungay)
+  //     .input("tyledong", req.body.tyledong)
+  //     .input("muctiendong", req.body.muctiendong)
+  //     .input("maphuongthucdong", req.body.maphuongthucdong)
+  //     .input("tenphuongthucdong", req.body.tenphuongthucdong)
+  //     .input("tuthang", req.body.tuthang)
+  //     .input("tientunguyendong", req.body.tientunguyendong)
+  //     .input("tienlai", req.body.tienlai)
+  //     .input("madoituong", req.body.madoituong)
+  //     .input("tendoituong", req.body.tendoituong)
+  //     .input("tylensnnht", req.body.tylensnnht)
+  //     .input("tiennsnnht", req.body.tiennsnnht)
+  //     .input("tylensdp", req.body.tylensdp)
+  //     .input("tiennsdp", req.body.tiennsdp)
+  //     .input("matinh", req.body.matinh)
+  //     .input("tentinh", req.body.tentinh)
+  //     .input("maquanhuyen", req.body.maquanhuyen)
+  //     .input("tenquanhuyen", req.body.tenquanhuyen)
+  //     .input("maxaphuong", req.body.maxaphuong)
+  //     .input("tenxaphuong", req.body.tenxaphuong)
+  //     .input("benhvientinh", req.body.benhvientinh)
+  //     .input("mabenhvien", req.body.mabenhvien)
+  //     .input("tenbenhvien", req.body.tenbenhvien)
+  //     .input("tothon", req.body.tothon)
+  //     .input("ghichu", req.body.ghichu)
+  //     .input("createdAt", req.body.createdAt)
+  //     .input("createdBy", req.body.createdBy)
+  //     .input("updatedAt", req.body.updatedAt)
+  //     .input("updatedBy", req.body.updatedBy)
+  //     .input("dotkekhai", newSoHoSo)
+  //     .input("kykekhai", req.body.kykekhai)
+  //     .input("ngaykekhai", req.body.ngaykekhai)
+  //     .input("trangthai", req.body.trangthai).query(`
+  //                 INSERT INTO kekhai (sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
+  //                   maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs, sotien,	
+  //                   tylengansachdiaphuong, hotrokhac, tungay, tyledong, muctiendong,	
+  //                   maphuongthucdong, tenphuongthucdong, tuthang, tientunguyendong, tienlai, madoituong,	
+  //                   tendoituong, tylensnnht, tiennsnnht, tylensdp, tiennsdp, matinh, tentinh, maquanhuyen, tenquanhuyen,	
+  //                   maxaphuong, tenxaphuong, benhvientinh, mabenhvien, tenbenhvien, tothon, ghichu,	
+  //                   createdAt, createdBy, updatedAt, updatedBy, dotkekhai, kykekhai, ngaykekhai, trangthai) 
+  //                 VALUES (@sohoso, @matochuc, @tentochuc, @madaily, @tendaily, @maloaihinh, @tenloaihinh, @hoten, @masobhxh, @cccd, @dienthoai,	
+  //                   @maphuongan, @tenphuongan, @ngaysinh, @gioitinh, @nguoithu, @tienluongcs, @sotien,	
+  //                   @tylengansachdiaphuong, @hotrokhac, @tungay, @tyledong, @muctiendong,	
+  //                   @maphuongthucdong, @tenphuongthucdong, @tuthang, @tientunguyendong, @tienlai, @madoituong,	
+  //                   @tendoituong, @tylensnnht, @tiennsnnht, @tylensdp, @tiennsdp, @matinh, @tentinh, @maquanhuyen, @tenquanhuyen,	
+  //                   @maxaphuong, @tenxaphuong, @benhvientinh, @mabenhvien, @tenbenhvien, @tothon, @ghichu,	
+  //                   @createdAt, @createdBy, @updatedAt, @updatedBy, @dotkekhai, @kykekhai, @ngaykekhai, @trangthai);
+  //             `);
+  //   const kekhai = req.body;
+  //   res.json(kekhai);
+  // } catch (error) {
+  //   res.status(500).json(error);
+  // }
 });
 
 router.post("/kekhai-trans", async (req, res) => {
