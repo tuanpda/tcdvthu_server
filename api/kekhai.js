@@ -110,10 +110,9 @@ router.post("/add-kekhai-series", async (req, res) => {
   // console.log(dataKekhai);
   try {
     await pool.connect();
-
+    let transaction = null
     // Bắt đầu giao dịch
-    const transaction = pool.transaction();
-
+    transaction = new Transaction(pool);
     await transaction.begin();
 
     for (const item of dataKekhai) {
