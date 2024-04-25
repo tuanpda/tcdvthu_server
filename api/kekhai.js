@@ -109,25 +109,29 @@ router.post("/add-kekhai-series", async (req, res) => {
   let dataKekhai = req.body;
   // console.log(dataKekhai);
   let transaction = null;
+  // Tạo mảng để lưu thông tin cần trả lại sau khi thành công
+  const listSuccess = [];
 
   try {
     // bắt đầu kết nối
     await pool.connect();
-
     // Bắt đầu giao dịch
     transaction = new Transaction(pool);
     await transaction.begin();
 
-    // Tạo mảng để lưu thông tin cần trả lại sau khi thành công
-    const listSuccess = [];
+    // Lấy số hồ sơ lớn nhất hiện tại để tạo số hồ sơ duy nhất
+    const maxSoHoSoResult = await pool
+      .request()
+      .query("SELECT MAX(_id) as max_so_ho_so FROM kekhai");
+    let maxSohoso = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0);
+    // const soHoso = newSoHoSo + "/" + item.nvt_masobhxh + "/" + item.nvt_cccd;
 
     for (const item of dataKekhai) {
-      // Tạo số hồ sơ duy nhất
-      const maxSoHoSoResult = await pool
-        .request()
-        .query("SELECT MAX(_id) as max_so_ho_so FROM kekhai");
-      const newSoHoSo = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
-      const soHoso = newSoHoSo + "/" + item.nvt_masobhxh + "/" + item.nvt_cccd;
+      // Tạo số hồ sơ mới
+      const newSoHoSo = maxSohoso + 1;
+      maxSohoso++; // Tăng giá trị cho lần tiếp theo
+
+      const soHoso = `${newSoHoSo}/${item.nvt_masobhxh}/${item.nvt_cccd}`;
 
       const result = await transaction
         .request()
