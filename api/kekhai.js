@@ -105,14 +105,18 @@ router.post("/add-kekhai", async (req, res) => {
 
 // add ke khai chạy theo bộ
 router.post("/add-kekhai-series", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   let dataKekhai = req.body;
   // console.log(dataKekhai);
   try {
     await pool.connect();
 
-    for (let i = 0; i < dataKekhai.length; i++) {
-      const item = dataKekhai[i];
+    // Bắt đầu giao dịch
+    const transaction = pool.transaction();
+
+    await transaction.begin();
+
+    for (const item of dataKekhai) {
       // Tạo số hồ sơ duy nhất
       const maxSoHoSoResult = await pool
         .request()
@@ -120,7 +124,7 @@ router.post("/add-kekhai-series", async (req, res) => {
       const newSoHoSo = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
       const soHoso = newSoHoSo + "/" + item.nvt_masobhxh + "/" + item.nvt_cccd;
 
-      const result = await pool
+      await transaction
         .request()
         .input("sohoso", soHoso)
         .input("matochuc", item.matochuc)
@@ -174,8 +178,7 @@ router.post("/add-kekhai-series", async (req, res) => {
         .input("dotkekhai", newSoHoSo)
         .input("kykekhai", item.kykekhai)
         .input("ngaykekhai", item.ngaykekhai)
-        .input("trangthai", item.trangthai)
-        .query(`
+        .input("trangthai", item.trangthai).query(`
                   INSERT INTO kekhai (sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
                     maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs, sotien,	
                     tylengansachdiaphuong, hotrokhac, tungay, tyledong, muctiendong,	
@@ -193,7 +196,10 @@ router.post("/add-kekhai-series", async (req, res) => {
               `);
     }
 
-    res.json({ message: "Data inserted successfully" });
+    // Nếu thành công, hoàn thành giao dịch
+    await transaction.commit();
+
+    res.json({ success: true, message: "Data inserted successfully" });
   } catch (error) {
     res.status(500).json(error);
   }
