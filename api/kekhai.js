@@ -108,9 +108,12 @@ router.post("/add-kekhai-series", async (req, res) => {
   // console.log(req.body);
   let dataKekhai = req.body;
   // console.log(dataKekhai);
+  let transaction = null;
+
   try {
+    // bắt đầu kết nối
     await pool.connect();
-    let transaction = null
+
     // Bắt đầu giao dịch
     transaction = new Transaction(pool);
     await transaction.begin();
@@ -197,10 +200,21 @@ router.post("/add-kekhai-series", async (req, res) => {
 
     // Nếu thành công, hoàn thành giao dịch
     await transaction.commit();
-
     res.json({ success: true, message: "Data inserted successfully" });
   } catch (error) {
-    res.status(500).json(error);
+    // Nếu có lỗi, hoàn tác giao dịch
+    if (transaction) {
+      await transaction.rollback();
+    }
+
+    res.status(500).json({
+      status: "error",
+      error: error.message,
+    });
+  } finally {
+    if (pool.connected) {
+      await pool.close(); // Đóng kết nối
+    }
   }
 });
 
@@ -433,12 +447,11 @@ router.post("/kekhai-trans", async (req, res) => {
       status: "error",
       error: error.message,
     });
+  } finally {
+    if (pool.connected) {
+      await pool.close(); // Đóng kết nối
+    }
   }
-  // finally {
-  //   if (pool.connected) {
-  //     await pool.close(); // Đóng kết nối
-  //   }
-  // }
 });
 
 // danh sách kê khai all
