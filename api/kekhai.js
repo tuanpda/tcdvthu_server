@@ -212,7 +212,7 @@ router.post("/add-kekhai-series", async (req, res) => {
         ngaykekhai: item.ngaykekhai,
         trangthai: item.trangthai,
         hoten: item.hoten,
-        masobhxhxh: item.masobhxhxh,
+        masobhxh: item.masobhxh,
         cccd: item.cccd,
         dienthoai: item.dienthoai,
       });
