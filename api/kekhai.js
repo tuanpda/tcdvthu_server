@@ -111,12 +111,8 @@ router.post("/add-kekhai-series", async (req, res) => {
   try {
     await pool.connect();
 
-    // Bắt đầu giao dịch
-    const transaction = pool.transaction();
-
-    await transaction.begin();
-
-    for (const item of dataKekhai) {
+    for (let i = 0; i < dataKekhai.length; i++) {
+      const item = dataKekhai[i];
       // Tạo số hồ sơ duy nhất
       const maxSoHoSoResult = await pool
         .request()
@@ -124,7 +120,7 @@ router.post("/add-kekhai-series", async (req, res) => {
       const newSoHoSo = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
       const soHoso = newSoHoSo + "/" + item.nvt_masobhxh + "/" + item.nvt_cccd;
 
-      await transaction
+      const result = await pool
         .request()
         .input("sohoso", soHoso)
         .input("matochuc", item.matochuc)
@@ -143,43 +139,42 @@ router.post("/add-kekhai-series", async (req, res) => {
         .input("gioitinh", item.gioitinh)
         .input("nguoithu", item.nguoithu)
         .input("tienluongcs", item.tienluongcs)
-        // .input("sotien", item.sotien)
-        // .input("tylengansachdiaphuong", item.tylengansachdiaphuong)
-        // .input("hotrokhac", item.hotrokhac)
-        // .input("tungay", item.tungay)
-        // .input("tyledong", item.tyledong)
-        // .input("muctiendong", item.muctiendong)
-        // .input("maphuongthucdong", item.maphuongthucdong)
-        // .input("tenphuongthucdong", item.tenphuongthucdong)
-        // .input("tuthang", item.tuthang)
-        // .input("tientunguyendong", item.tientunguyendong)
-        // .input("tienlai", item.tienlai)
-        // .input("madoituong", item.madoituong)
-        // .input("tendoituong", item.tendoituong)
-        // .input("tylensnnht", item.tylensnnht)
-        // .input("tiennsnnht", item.tiennsnnht)
-        // .input("tylensdp", item.tylensdp)
-        // .input("tiennsdp", item.tiennsdp)
-        // .input("matinh", item.matinh)
-        // .input("tentinh", item.tentinh)
-        // .input("maquanhuyen", item.maquanhuyen)
-        // .input("tenquanhuyen", item.tenquanhuyen)
-        // .input("maxaphuong", item.maxaphuong)
-        // .input("tenxaphuong", item.tenxaphuong)
-        // .input("benhvientinh", item.benhvientinh)
-        // .input("mabenhvien", item.mabenhvien)
-        // .input("tenbenhvien", item.tenbenhvien)
-        // .input("tothon", item.tothon)
-        // .input("ghichu", item.ghichu)
-        // .input("createdAt", item.createdAt)
-        // .input("createdBy", item.createdBy)
-        // .input("updatedAt", item.updatedAt)
-        // .input("updatedBy", item.updatedBy)
-        // .input("dotkekhai", newSoHoSo)
-        // .input("kykekhai", item.kykekhai)
-        // .input("ngaykekhai", item.ngaykekhai)
-        // .input("trangthai", item.trangthai)
-        .query(`
+        .input("sotien", item.sotien)
+        .input("tylengansachdiaphuong", item.tylengansachdiaphuong)
+        .input("hotrokhac", item.hotrokhac)
+        .input("tungay", item.tungay)
+        .input("tyledong", item.tyledong)
+        .input("muctiendong", item.muctiendong)
+        .input("maphuongthucdong", item.maphuongthucdong)
+        .input("tenphuongthucdong", item.tenphuongthucdong)
+        .input("tuthang", item.tuthang)
+        .input("tientunguyendong", item.tientunguyendong)
+        .input("tienlai", item.tienlai)
+        .input("madoituong", item.madoituong)
+        .input("tendoituong", item.tendoituong)
+        .input("tylensnnht", item.tylensnnht)
+        .input("tiennsnnht", item.tiennsnnht)
+        .input("tylensdp", item.tylensdp)
+        .input("tiennsdp", item.tiennsdp)
+        .input("matinh", item.matinh)
+        .input("tentinh", item.tentinh)
+        .input("maquanhuyen", item.maquanhuyen)
+        .input("tenquanhuyen", item.tenquanhuyen)
+        .input("maxaphuong", item.maxaphuong)
+        .input("tenxaphuong", item.tenxaphuong)
+        .input("benhvientinh", item.benhvientinh)
+        .input("mabenhvien", item.mabenhvien)
+        .input("tenbenhvien", item.tenbenhvien)
+        .input("tothon", item.tothon)
+        .input("ghichu", item.ghichu)
+        .input("createdAt", item.createdAt)
+        .input("createdBy", item.createdBy)
+        .input("updatedAt", item.updatedAt)
+        .input("updatedBy", item.updatedBy)
+        .input("dotkekhai", newSoHoSo)
+        .input("kykekhai", item.kykekhai)
+        .input("ngaykekhai", item.ngaykekhai)
+        .input("trangthai", item.trangthai).query(`
                   INSERT INTO kekhai (sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
                     maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs, sotien,	
                     tylengansachdiaphuong, hotrokhac, tungay, tyledong, muctiendong,	
@@ -196,9 +191,6 @@ router.post("/add-kekhai-series", async (req, res) => {
                     @createdAt, @createdBy, @updatedAt, @updatedBy, @dotkekhai, @kykekhai, @ngaykekhai, @trangthai);
               `);
     }
-
-    // Nếu thành công, hoàn thành giao dịch
-    await transaction.commit();
 
     res.json({ message: "Data inserted successfully" });
   } catch (error) {
