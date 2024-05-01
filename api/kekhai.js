@@ -123,10 +123,9 @@ router.post("/add-kekhai-series", async (req, res) => {
     const maxSoHoSoResult = await pool
       .request()
       .query("SELECT MAX(_id) as max_so_ho_so FROM kekhai");
-    let maxSohoso = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0);
+    let maxSohoso = maxSoHoSoResult.recordset[0].max_so_ho_so || 0;
 
     for (const item of dataKekhai) {
-      const soKyDotKeKhai = getNumerDotkekhai
       // Tạo số hồ sơ mới
       const newSoHoSo = maxSohoso + 1;
       const soHoso = `${newSoHoSo}/${item.nvt_masobhxh}/${item.nvt_cccd}`;
@@ -321,6 +320,111 @@ router.get("/hskekhaifromtotungay", async (req, res) => {
       );
     const kekhai = result.recordset;
     res.json(kekhai);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// truy van tim lich su ke khai theo bo ho so
+// tim theo ky ke khai
+router.get("/kykekhai-search-series", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .input("kykekhai", req.query.kykekhai)
+      .query(
+        `SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
+        FROM kekhai where kykekhai=@kykekhai
+        GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh`
+      );
+    const kekhai = result.recordset;
+    res.json({
+      success: true,
+      kekhai,
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+router.get("/kykekhai-search-series-pagi", async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1; // Chuyển đổi page thành số nguyên
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const offset = (page - 1) * limit;
+    // console.log(offset);
+    // console.log(typeof(offset));
+    const kykekhai = req.query.kykekhai;
+
+    await pool.connect();
+    const result = await pool
+      .request()
+      .input("kykekhai", kykekhai)
+      .input("offset", offset)
+      .input("limit", limit)
+      .query(
+        `SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
+        FROM kekhai where kykekhai=@kykekhai
+        GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
+        ORDER BY sohoso desc OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
+        `
+      );
+
+    const data = result.recordset;
+
+    // Đếm tổng số lượng bản ghi
+    const countResult = await pool
+      .request()
+      .query(
+        `with t as (
+          SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
+          FROM kekhai where kykekhai='04/2024'
+          GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
+          )
+          SELECT COUNT(*) AS totalCount FROM t`
+      );
+    const totalCount = countResult.recordset[0].totalCount;
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const info = {
+      count: totalCount,
+      pages: totalPages,
+      next:
+        page < totalPages
+          ? `${req.path}?page=${page + 1}`
+          : null,
+      prev:
+        page > 1 ? `${req.path}?page=${page - 1}` : null,
+    };
+
+    // Tạo đối tượng JSON phản hồi
+    const response = {
+      info: info,
+      results: data,
+    };
+
+    res.json(response);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// xuất mẫu hồ sơ liệt kê danh sách
+router.get("/get-all-kekhai-xuatmau", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .input("sohoso", req.query.sohoso)
+      .query(
+        `SELECT * from kekhai where sohoso=@sohoso`
+      );
+    const kekhai = result.recordset;
+    res.json({
+      success: true,
+      kekhai,
+    });
   } catch (error) {
     res.status(500).json(error);
   }
