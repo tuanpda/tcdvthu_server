@@ -357,16 +357,18 @@ router.get("/kykekhai-search-series-pagi", async (req, res) => {
     // console.log(offset);
     // console.log(typeof(offset));
     const kykekhai = req.query.kykekhai;
+    const madaily = req.query.madaily;
 
     await pool.connect();
     const result = await pool
       .request()
       .input("kykekhai", kykekhai)
+      .input("madaily", madaily)
       .input("offset", offset)
       .input("limit", limit)
       .query(
         `SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
-        FROM kekhai where kykekhai=@kykekhai
+        FROM kekhai where kykekhai=@kykekhai and madaily=@madaily
         GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
         ORDER BY sohoso desc OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
         `
@@ -378,10 +380,11 @@ router.get("/kykekhai-search-series-pagi", async (req, res) => {
     const countResult = await pool
       .request()
       .input("kykekhai", kykekhai)
+      .input("madaily", madaily)
       .query(
         `with t as (
           SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
-          FROM kekhai where kykekhai=@kykekhai
+          FROM kekhai where kykekhai=@kykekhai and madaily=@madaily
           GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
           )
           SELECT COUNT(*) AS totalCount FROM t`
