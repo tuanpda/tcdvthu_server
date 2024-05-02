@@ -375,10 +375,11 @@ router.get("/kykekhai-search-series-pagi", async (req, res) => {
     // Đếm tổng số lượng bản ghi
     const countResult = await pool
       .request()
+      .input("kykekhai", kykekhai)
       .query(
         `with t as (
           SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
-          FROM kekhai where kykekhai='04/2024'
+          FROM kekhai where kykekhai=@kykekhai
           GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
           )
           SELECT COUNT(*) AS totalCount FROM t`
