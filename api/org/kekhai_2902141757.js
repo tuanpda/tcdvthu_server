@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { pool } = require("../database/dbinfo");
+const { pool } = require("../../database/dbinfo");
 const {
   Table,
   NVarChar,
@@ -11,6 +11,8 @@ const {
   Date,
   DateTime,
 } = require("mssql");
+
+let table_name = "kekhai_2902141757"
 
 // add ke khai chạy lẻ từng dòng
 router.post("/add-kekhai", async (req, res) => {
@@ -81,7 +83,7 @@ router.post("/add-kekhai", async (req, res) => {
       .input("kykekhai", req.body.kykekhai)
       .input("ngaykekhai", req.body.ngaykekhai)
       .input("trangthai", req.body.trangthai).query(`
-                  INSERT INTO kekhai (sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
+                  INSERT INTO ${table_name} (sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
                     maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs, sotien,	
                     tylengansachdiaphuong, hotrokhac, tungay, tyledong, muctiendong,	
                     maphuongthucdong, tenphuongthucdong, tuthang, tientunguyendong, tienlai, madoituong,	
@@ -122,7 +124,7 @@ router.post("/add-kekhai-series", async (req, res) => {
     // Lấy số hồ sơ lớn nhất hiện tại để tạo số hồ sơ duy nhất
     const maxSoHoSoResult = await pool
       .request()
-      .query("SELECT MAX(_id) as max_so_ho_so FROM kekhai");
+      .query(`SELECT MAX(_id) as max_so_ho_so FROM ${table_name}`);
     let maxSohoso = maxSoHoSoResult.recordset[0].max_so_ho_so || 0;
 
     for (const item of dataKekhai) {
@@ -187,7 +189,7 @@ router.post("/add-kekhai-series", async (req, res) => {
         .input("ngaybienlai", item.ngaybienlai)
         .input("sobienlai", item.sobienlai)
         .input("trangthai", item.trangthai).query(`
-                  INSERT INTO kekhai (sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
+                  INSERT INTO ${table_name} (sohoso, matochuc, tentochuc, madaily, tendaily, maloaihinh, tenloaihinh, hoten, masobhxh, cccd, dienthoai,	
                     maphuongan, tenphuongan, ngaysinh, gioitinh, nguoithu, tienluongcs, sotien,	
                     tylengansachdiaphuong, hotrokhac, tungay, tyledong, muctiendong,	
                     maphuongthucdong, tenphuongthucdong, tuthang, tientunguyendong, tienlai, madoituong,	
@@ -212,6 +214,8 @@ router.post("/add-kekhai-series", async (req, res) => {
         trangthai: item.trangthai,
         hoten: item.hoten,
         masobhxh: item.masobhxh,
+        ngaysinh: item.ngaysinh,
+        gioitinh: item.gioitinh,
         cccd: item.cccd,
         dienthoai: item.dienthoai,
       });
@@ -245,7 +249,7 @@ router.post("/add-kekhai-series", async (req, res) => {
 router.get("/all-ds-kekhai", async (req, res) => {
   try {
     await pool.connect();
-    const result = await pool.request().query(`SELECT * FROM kekhai_2902141757`);
+    const result = await pool.request().query(`SELECT * FROM ${table_name}`);
     const kekhai = result.recordset;
     res.json(kekhai);
   } catch (error) {
@@ -261,7 +265,7 @@ router.get("/getalldskkwithmalh", async (req, res) => {
     const result = await pool
       .request()
       .input("maloaihinh", req.query.maloaihinh)
-      .query(`SELECT * FROM kekhai where maloaihinh=@maloaihinh`);
+      .query(`SELECT * FROM ${table_name} where maloaihinh=@maloaihinh`);
     const kekhai = result.recordset;
     res.json(kekhai);
   } catch (error) {
@@ -279,7 +283,7 @@ router.get("/getalldskkwithmalh", async (req, res) => {
       .input("maloaihinh", req.query.maloaihinh)
       .input("madaily", req.query.madaily)
       .query(
-        `SELECT * FROM kekhai where maloaihinh=@maloaihinh and madaily=@madaily`
+        `SELECT * FROM ${table_name} where maloaihinh=@maloaihinh and madaily=@madaily`
       );
     const kekhai = result.recordset;
     res.json(kekhai);
@@ -298,7 +302,7 @@ router.get("/getallkekhaiwithuser", async (req, res) => {
       .input("maloaihinh", req.query.maloaihinh)
       .input("madaily", req.query.madaily)
       .query(
-        `SELECT * FROM kekhai where madaily=@madaily and maloaihinh=@maloaihinh`
+        `SELECT * FROM ${table_name} where madaily=@madaily and maloaihinh=@maloaihinh`
       );
     const kekhai = result.recordset;
     res.json(kekhai);
@@ -318,7 +322,7 @@ router.get("/hskekhaifromtotungay", async (req, res) => {
       .input("tungay", req.query.tungay)
       .input("denngay", req.query.denngay)
       .query(
-        `select * from kekhai where maloaihinh=@maloaihinh and madaily=@madaily and tungay between @tungay and @denngay`
+        `select * from ${table_name} where maloaihinh=@maloaihinh and madaily=@madaily and tungay between @tungay and @denngay`
       );
     const kekhai = result.recordset;
     res.json(kekhai);
@@ -336,9 +340,9 @@ router.get("/kykekhai-search-series", async (req, res) => {
       .request()
       .input("kykekhai", req.query.kykekhai)
       .query(
-        `SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
-        FROM kekhai where kykekhai=@kykekhai
-        GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh`
+        `SELECT tendaily, sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
+        FROM ${table_name} where kykekhai=@kykekhai
+        GROUP BY tendaily, sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh`
       );
     const kekhai = result.recordset;
     res.json({
@@ -367,9 +371,9 @@ router.get("/kykekhai-search-series-pagi", async (req, res) => {
       .input("offset", offset)
       .input("limit", limit)
       .query(
-        `SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
-        FROM kekhai where kykekhai=@kykekhai and madaily=@madaily
-        GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
+        `SELECT tendaily, sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
+        FROM ${table_name} where kykekhai=@kykekhai and madaily=@madaily
+        GROUP BY tendaily, sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
         ORDER BY sohoso desc OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
         `
       );
@@ -384,7 +388,7 @@ router.get("/kykekhai-search-series-pagi", async (req, res) => {
       .query(
         `with t as (
           SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
-          FROM kekhai where kykekhai=@kykekhai and madaily=@madaily
+          FROM ${table_name} where kykekhai=@kykekhai and madaily=@madaily
           GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
           )
           SELECT COUNT(*) AS totalCount FROM t`
@@ -424,7 +428,7 @@ router.get("/get-all-kekhai-xuatmau", async (req, res) => {
       .request()
       .input("sohoso", req.query.sohoso)
       .query(
-        `SELECT * from kekhai where sohoso=@sohoso`
+        `SELECT * from ${table_name} where sohoso=@sohoso`
       );
     const kekhai = result.recordset;
     res.json({

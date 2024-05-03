@@ -3,6 +3,138 @@ const router = express.Router();
 const { pool } = require("../database/dbinfo");
 const multer = require("multer");
 
+// update tỷ lệ hỗ trợ ar
+router.post("/update-ar", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .input("_id", req.body._id)
+      .query(`SELECT * FROM dm_tylehotro WHERE _id = _id`);
+    const dta = result.recordset[0];
+    if (dta) {
+      await pool
+        .request()
+        .input("tylengansachtw", req.body.tylengansachtw)
+        .input("tylenngansachdp", req.body.tylenngansachdp)
+        .input("tylehotrokhac", req.body.tylehotrokhac)
+        .input("ghichu", req.body.ghichu)
+        .query(
+          `UPDATE dm_tylehotro SET
+                tylengansachtw = @tylengansachtw,
+                tylenngansachdp = @tylenngansachdp,
+                tylehotrokhac = @tylehotrokhac,
+                ghichu = @ghichu
+              WHERE _id = _id;`
+        );
+    }
+    res.json({
+      success: true,
+      message: "updated success !",
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// update tỷ lệ đóng IS
+router.post("/update-tyledongis", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .input("_id", req.body._id)
+      .query(`SELECT * FROM dm_tyledong WHERE _id = _id`);
+    const dta = result.recordset[0];
+    if (dta) {
+      await pool
+        .request()
+        .input("tyledong", req.body.tyledong)
+        .input("nam", req.body.nam)
+        .input("ghichu", req.body.ghichu)
+        .query(
+          `UPDATE dm_tyledong SET
+                tyledong = @tyledong,
+                nam = @nam,
+                ghichu = @ghichu
+              WHERE _id = _id;`
+        );
+    }
+    res.json({
+      success: true,
+      message: "updated success !",
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// update tỷ lệ địa phương hỗ trợ cho IS
+router.post("/update-tylediaphuonghtis", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .input("_id", req.body._id)
+      .query(`SELECT * FROM dm_tylediaphuonghtis WHERE _id = _id`);
+    const dta = result.recordset[0];
+    if (dta) {
+      await pool
+        .request()
+        .input("tylediaphuong", req.body.tylediaphuong)
+        .input("tylekhac", req.body.tylekhac)
+        .input("nam", req.body.nam)
+        .input("ghichu", req.body.ghichu)
+        .query(
+          `UPDATE dm_tylediaphuonghtis SET
+                tylediaphuong = @tylediaphuong,
+                tylekhac = @tylekhac,
+                nam = @nam,
+                ghichu = @ghichu
+              WHERE _id = _id;`
+        );
+    }
+    res.json({
+      success: true,
+      message: "updated success !",
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// update chuẩn nghèo
+router.post("/update-chuanngheo", async (req, res) => {
+  try {
+    await pool.connect();
+    const result = await pool
+      .request()
+      .input("_id", req.body._id)
+      .query(`SELECT * FROM dm_chuanngheo WHERE _id = _id`);
+    const dta = result.recordset[0];
+    if (dta) {
+      await pool
+        .request()
+        .input("chuanngheo", req.body.chuanngheo)
+        .input("nam", req.body.nam)
+        .input("ghichu", req.body.ghichu)
+        .query(
+          `UPDATE dm_chuanngheo SET
+                chuanngheo = @chuanngheo,
+                nam = @nam,
+                ghichu = @ghichu
+              WHERE _id = _id;`
+        );
+    }
+    res.json({
+      success: true,
+      message: "updated success !",
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 // danh mục tỉnh thành phố
 router.get("/dmtinh", async (req, res) => {
   try {
@@ -55,9 +187,7 @@ router.get("/dmxaphuong", async (req, res) => {
     await pool.connect();
     const result = await pool
       .request()
-      .query(
-        `SELECT * FROM dm_xaphuong order by maxaphuong`
-      );
+      .query(`SELECT * FROM dm_xaphuong order by maxaphuong`);
     const xa = result.recordset;
     res.json(xa);
   } catch (error) {
@@ -88,9 +218,7 @@ router.get("/get-all-xaphuongwithphantrang", async (req, res) => {
     // Đếm tổng số lượng bản ghi
     const countResult = await pool
       .request()
-      .query(
-        `SELECT COUNT(*) AS totalCount FROM dm_xaphuong`
-      );
+      .query(`SELECT COUNT(*) AS totalCount FROM dm_xaphuong`);
     const totalCount = countResult.recordset[0].totalCount;
 
     const totalPages = Math.ceil(totalCount / limit);
@@ -98,12 +226,8 @@ router.get("/get-all-xaphuongwithphantrang", async (req, res) => {
     const info = {
       count: totalCount,
       pages: totalPages,
-      next:
-        page < totalPages
-          ? `${req.path}?page=${page + 1}`
-          : null,
-      prev:
-        page > 1 ? `${req.path}?page=${page - 1}` : null,
+      next: page < totalPages ? `${req.path}?page=${page + 1}` : null,
+      prev: page > 1 ? `${req.path}?page=${page - 1}` : null,
     };
 
     // Tạo đối tượng JSON phản hồi
@@ -139,11 +263,7 @@ router.get("/dmxaphuongwithmahuyen", async (req, res) => {
 router.get("/dmmahuongbhyt", async (req, res) => {
   try {
     await pool.connect();
-    const result = await pool
-      .request()
-      .query(
-        `SELECT * FROM dm_mahuongbhyt`
-      );
+    const result = await pool.request().query(`SELECT * FROM dm_mahuongbhyt`);
     const mabhyt = result.recordset;
     res.json(mabhyt);
   } catch (error) {
@@ -155,11 +275,7 @@ router.get("/dmmahuongbhyt", async (req, res) => {
 router.get("/dmluongcs", async (req, res) => {
   try {
     await pool.connect();
-    const result = await pool
-      .request()
-      .query(
-        `SELECT * FROM dm_luongcoso`
-      );
+    const result = await pool.request().query(`SELECT * FROM dm_luongcoso`);
     const luongcs = result.recordset;
     res.json(luongcs);
   } catch (error) {
@@ -174,9 +290,7 @@ router.get("/dmbenhvienwithtinh", async (req, res) => {
     const result = await pool
       .request()
       .input("matinh", req.query.matinh)
-      .query(
-        `SELECT * FROM dm_benhvien where matinh=@matinh order by matinh`
-      );
+      .query(`SELECT * FROM dm_benhvien where matinh=@matinh order by matinh`);
     const benhvien = result.recordset;
     res.json(benhvien);
   } catch (error) {
@@ -190,9 +304,7 @@ router.get("/dmloaihinhtg", async (req, res) => {
     await pool.connect();
     const result = await pool
       .request()
-      .query(
-        `SELECT * FROM dm_loaihinhtg order by maloaihinh`
-      );
+      .query(`SELECT * FROM dm_loaihinhtg order by maloaihinh`);
     const kq = result.recordset;
     res.json(kq);
   } catch (error) {
@@ -206,9 +318,7 @@ router.get("/dmnguoithu", async (req, res) => {
     await pool.connect();
     const result = await pool
       .request()
-      .query(
-        `SELECT * FROM dm_nguoithu order by manguoithu`
-      );
+      .query(`SELECT * FROM dm_nguoithu order by manguoithu`);
     const kq = result.recordset;
     res.json(kq);
   } catch (error) {
@@ -222,9 +332,7 @@ router.get("/dmptdong", async (req, res) => {
     await pool.connect();
     const result = await pool
       .request()
-      .query(
-        `SELECT * FROM dm_phuongthucdong order by orderstt`
-      );
+      .query(`SELECT * FROM dm_phuongthucdong order by orderstt`);
     const kq = result.recordset;
     res.json(kq);
   } catch (error) {
@@ -238,9 +346,7 @@ router.get("/dmdtdong", async (req, res) => {
     await pool.connect();
     const result = await pool
       .request()
-      .query(
-        `SELECT * FROM dm_doituongdong order by madoituong`
-      );
+      .query(`SELECT * FROM dm_doituongdong order by madoituong`);
     const kq = result.recordset;
     res.json(kq);
   } catch (error) {
@@ -254,9 +360,7 @@ router.get("/tylehotro", async (req, res) => {
     await pool.connect();
     const result = await pool
       .request()
-      .query(
-        `SELECT * FROM dm_tylehotro where active=1`
-      );
+      .query(`SELECT * FROM dm_tylehotro where active=1`);
     const kq = result.recordset;
     res.json(kq);
   } catch (error) {
@@ -268,11 +372,7 @@ router.get("/tylehotro", async (req, res) => {
 router.get("/tylehotroall", async (req, res) => {
   try {
     await pool.connect();
-    const result = await pool
-      .request()
-      .query(
-        `SELECT * FROM dm_tylehotro`
-      );
+    const result = await pool.request().query(`SELECT * FROM dm_tylehotro`);
     const kq = result.recordset;
     res.json(kq);
   } catch (error) {
@@ -286,9 +386,7 @@ router.get("/tyledongbhtn", async (req, res) => {
     await pool.connect();
     const result = await pool
       .request()
-      .query(
-        `SELECT * FROM dm_tyledong where active=1`
-      );
+      .query(`SELECT * FROM dm_tyledong where active=1`);
     const kq = result.recordset;
     res.json(kq);
   } catch (error) {
@@ -300,11 +398,7 @@ router.get("/tyledongbhtn", async (req, res) => {
 router.get("/tyledongbhtnall", async (req, res) => {
   try {
     await pool.connect();
-    const result = await pool
-      .request()
-      .query(
-        `SELECT * FROM dm_tyledong`
-      );
+    const result = await pool.request().query(`SELECT * FROM dm_tyledong`);
     const kq = result.recordset;
     res.json(kq);
   } catch (error) {
@@ -318,9 +412,7 @@ router.get("/mucchuanngheo", async (req, res) => {
     await pool.connect();
     const result = await pool
       .request()
-      .query(
-        `SELECT * FROM dm_chuanngheo where active=1`
-      );
+      .query(`SELECT * FROM dm_chuanngheo where active=1`);
     const kq = result.recordset;
     res.json(kq);
   } catch (error) {
@@ -332,11 +424,7 @@ router.get("/mucchuanngheo", async (req, res) => {
 router.get("/mucchuanngheoall", async (req, res) => {
   try {
     await pool.connect();
-    const result = await pool
-      .request()
-      .query(
-        `SELECT * FROM dm_chuanngheo`
-      );
+    const result = await pool.request().query(`SELECT * FROM dm_chuanngheo`);
     const kq = result.recordset;
     res.json(kq);
   } catch (error) {
@@ -350,9 +438,7 @@ router.get("/diaphuonghtis", async (req, res) => {
     await pool.connect();
     const result = await pool
       .request()
-      .query(
-        `SELECT * FROM dm_tylediaphuonghtis where active=1`
-      );
+      .query(`SELECT * FROM dm_tylediaphuonghtis where active=1`);
     const kq = result.recordset;
     res.json(kq);
   } catch (error) {
@@ -366,15 +452,12 @@ router.get("/diaphuonghtisall", async (req, res) => {
     await pool.connect();
     const result = await pool
       .request()
-      .query(
-        `SELECT * FROM dm_tylediaphuonghtis`
-      );
+      .query(`SELECT * FROM dm_tylediaphuonghtis`);
     const kq = result.recordset;
     res.json(kq);
   } catch (error) {
     res.status(500).json(error);
   }
 });
-
 
 module.exports = router;
