@@ -353,6 +353,8 @@ router.get("/kykekhai-search-series", async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+// tìm hồ sơ kê khai dành cho điểm thu
 router.get("/kykekhai-search-series-pagi", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1; // Chuyển đổi page thành số nguyên
@@ -389,6 +391,72 @@ router.get("/kykekhai-search-series-pagi", async (req, res) => {
         `with t as (
           SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
           FROM ${table_name} where kykekhai=@kykekhai and madaily=@madaily
+          GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
+          )
+          SELECT COUNT(*) AS totalCount FROM t`
+      );
+    const totalCount = countResult.recordset[0].totalCount;
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const info = {
+      count: totalCount,
+      pages: totalPages,
+      next:
+        page < totalPages
+          ? `${req.path}?page=${page + 1}`
+          : null,
+      prev:
+        page > 1 ? `${req.path}?page=${page - 1}` : null,
+    };
+
+    // Tạo đối tượng JSON phản hồi
+    const response = {
+      info: info,
+      results: data,
+    };
+
+    res.json(response);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// tìm hồ sơ kê khai dành cho nhân viên thu
+router.get("/kykekhai-search-series-pagi-nvcty", async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1; // Chuyển đổi page thành số nguyên
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const offset = (page - 1) * limit;
+    // console.log(offset);
+    // console.log(typeof(offset));
+    const kykekhai = req.query.kykekhai;
+    const madaily = req.query.madaily;
+
+    await pool.connect();
+    const result = await pool
+      .request()
+      .input("kykekhai", kykekhai)
+      .input("offset", offset)
+      .input("limit", limit)
+      .query(
+        `SELECT tendaily, sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
+        FROM ${table_name} where kykekhai=@kykekhai
+        GROUP BY tendaily, sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
+        ORDER BY sohoso desc OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
+        `
+      );
+
+    const data = result.recordset;
+
+    // Đếm tổng số lượng bản ghi
+    const countResult = await pool
+      .request()
+      .input("kykekhai", kykekhai)
+      .query(
+        `with t as (
+          SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
+          FROM ${table_name} where kykekhai=@kykekhai
           GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
           )
           SELECT COUNT(*) AS totalCount FROM t`
