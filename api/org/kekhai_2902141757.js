@@ -391,7 +391,7 @@ router.get("/kykekhai-search-series-pagi", async (req, res) => {
         `with t as (
           SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
           FROM ${table_name} where kykekhai=@kykekhai and madaily=@madaily
-          GROUP BY cast(dotkekhai as int), dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
+          GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
           )
           SELECT COUNT(*) AS totalCount FROM t`
       );
@@ -456,7 +456,7 @@ router.get("/kykekhai-search-series-pagi-nvcty", async (req, res) => {
         `with t as (
           SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
           FROM ${table_name} where kykekhai=@kykekhai
-          GROUP BY cast(dotkekhai as int), dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
+          GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
           )
           SELECT COUNT(*) AS totalCount FROM t`
       );
