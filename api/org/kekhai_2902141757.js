@@ -376,7 +376,7 @@ router.get("/kykekhai-search-series-pagi", async (req, res) => {
         `SELECT tendaily, sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
         FROM ${table_name} where kykekhai=@kykekhai and madaily=@madaily
         GROUP BY tendaily, sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
-        ORDER BY sohoso desc OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
+        ORDER BY cast(dotkekhai as int) desc OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
         `
       );
 
@@ -391,7 +391,7 @@ router.get("/kykekhai-search-series-pagi", async (req, res) => {
         `with t as (
           SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
           FROM ${table_name} where kykekhai=@kykekhai and madaily=@madaily
-          GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
+          GROUP BY cast(dotkekhai as int), dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
           )
           SELECT COUNT(*) AS totalCount FROM t`
       );
@@ -431,7 +431,6 @@ router.get("/kykekhai-search-series-pagi-nvcty", async (req, res) => {
     // console.log(offset);
     // console.log(typeof(offset));
     const kykekhai = req.query.kykekhai;
-    const madaily = req.query.madaily;
 
     await pool.connect();
     const result = await pool
@@ -443,7 +442,7 @@ router.get("/kykekhai-search-series-pagi-nvcty", async (req, res) => {
         `SELECT tendaily, sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
         FROM ${table_name} where kykekhai=@kykekhai
         GROUP BY tendaily, sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
-        ORDER BY sohoso desc OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
+        ORDER BY cast(dotkekhai as int) desc OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
         `
       );
 
@@ -457,7 +456,7 @@ router.get("/kykekhai-search-series-pagi-nvcty", async (req, res) => {
         `with t as (
           SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
           FROM ${table_name} where kykekhai=@kykekhai
-          GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
+          GROUP BY cast(dotkekhai as int), dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
           )
           SELECT COUNT(*) AS totalCount FROM t`
       );

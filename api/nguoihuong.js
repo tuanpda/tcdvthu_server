@@ -10,7 +10,7 @@ router.get("/find-nguoihuong", async (req, res) => {
     const result = await pool
       .request()
       .input("MaSoBhxh", req.query.MaSoBhxh)
-      .query(`SELECT * FROM quanlynguoihuong where MaSoBhxh=@MaSoBhxh`);
+      .query(`SELECT * FROM quanlynguoihuong where MaSoBhxh=@MaSoBhxh and MaSoBhxh<>''`);
     const nguoihuong = result.recordset;
     res.json(nguoihuong);
   } catch (error) {
