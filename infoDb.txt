@@ -1,4 +1,0 @@
-thông tin máy chủ: 125.212.224.205
-dbnam: tuanphan_tcdvthu
-username_sql: tuanphan_tcdvthu
-pass: 94sLv4?y3

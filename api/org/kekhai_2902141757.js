@@ -12,7 +12,7 @@ const {
   DateTime,
 } = require("mssql");
 
-let table_name = "kekhai_2902141757"
+let table_name = "kekhai_2902141757";
 
 // add ke khai chạy lẻ từng dòng
 router.post("/add-kekhai", async (req, res) => {
@@ -245,6 +245,83 @@ router.post("/add-kekhai-series", async (req, res) => {
   }
 });
 
+// đẩy thông tin lên cổng
+router.post("/pushinfotoportbhxhvn", async (req, res) => {
+  // console.log(req.body);
+  let data = req.body;
+  let transaction = null;
+  // Tạo mảng để lưu thông tin cần trả lại sau khi thành công
+  const listSuccess = [];
+
+  try {
+    // bắt đầu kết nối
+    await pool.connect();
+    // Bắt đầu giao dịch
+    transaction = new Transaction(pool);
+    await transaction.begin();
+
+    for (const item of data) {
+      const result = await transaction
+        .request()
+        .input("maSoBhxh", item.masobhxh)
+        .input("hoTen", item.hoten)
+        .input("soCccd", item.cccd)
+        .input("ngaySinh", item.ngaysinh)
+        .input("gioiTinh", item.gioitinh)
+        .input("loaiDt", item.tenloaihinh)
+        .input("soTien", item.sotien)
+        .input("soThang", item.maphuongthucdong)
+        .input("maToChucDvt", item.matochuc)
+        .input("tenToChucDvt", item.tentochuc)
+        .input("maNhanVienThu", item.tentochuc)
+        .input("tenNhanVienThu", item.tentochuc)
+        .input("maCqBhxh", item.tentochuc)
+        .input("tenCqBhxh", item.tentochuc)
+        .input("keyfrombhvn", item.tentochuc)
+        .input("tuNgay", item.tentochuc)
+        .input("denNgay", item.tentochuc).query(`
+                    INSERT INTO thongtin (maSoBhxh, hoTen, soCccd, ngaySinh, gioiTinh, loaiDt, soTien, soThang, maToChucDvt, tenToChucDvt, maNhanVienThu,
+                      tenNhanVienThu, maCqBhxh, tenCqBhxh, keyfrombhvn, tuNgay, denNgay)
+                    VALUES (@maSoBhxh, @hoTen, @soCccd, @ngaySinh, @gioiTinh, @loaiDt, @soTien, @soThang, @maToChucDvt, @tenToChucDvt, @maNhanVienThu,
+                      @tenNhanVienThu, @maCqBhxh, @tenCqBhxh, @keyfrombhvn, @tuNgay, @denNgay);
+                `);
+      // Lưu thông tin cần thiết vào danh sách
+      const bodyRes = {
+        maLoi: "0",
+        moTaLoi: "",
+        maXacNhan: "POS0000000002",
+        noidung: `BHXH Việt Nam xác nhận: Ông (bà): ${item.hoten}, Số CCCD: ${item.cccd}. Ngày 31/07/2023 đã đóng ${item.sotien} đồng, tương ứng
+            quá trình tham gia BHXH từ ngày 31/07/2023 đến ngày
+            30/07/2024. Sử dụng MÃ XÁC NHẬN POS0000000002 để
+            tra cứu thông tin chi tiết tại địa chỉ https://baoh
+            iemxahoi.gov.vn`,
+      };
+    }
+
+    // Nếu thành công, hoàn thành giao dịch
+    await transaction.commit();
+    res.json({
+      success: true,
+      message: "Data inserted successfully",
+      data: bodyRes,
+    });
+  } catch (error) {
+    // Nếu có lỗi, hoàn tác giao dịch
+    if (transaction) {
+      await transaction.rollback();
+    }
+
+    res.status(500).json({
+      status: "error",
+      error: error.message,
+    });
+  } finally {
+    if (pool.connected) {
+      await pool.close(); // Đóng kết nối
+    }
+  }
+});
+
 // danh sách kê khai all
 router.get("/all-ds-kekhai", async (req, res) => {
   try {
@@ -402,12 +479,8 @@ router.get("/kykekhai-search-series-pagi", async (req, res) => {
     const info = {
       count: totalCount,
       pages: totalPages,
-      next:
-        page < totalPages
-          ? `${req.path}?page=${page + 1}`
-          : null,
-      prev:
-        page > 1 ? `${req.path}?page=${page - 1}` : null,
+      next: page < totalPages ? `${req.path}?page=${page + 1}` : null,
+      prev: page > 1 ? `${req.path}?page=${page - 1}` : null,
     };
 
     // Tạo đối tượng JSON phản hồi
@@ -467,12 +540,8 @@ router.get("/kykekhai-search-series-pagi-nvcty", async (req, res) => {
     const info = {
       count: totalCount,
       pages: totalPages,
-      next:
-        page < totalPages
-          ? `${req.path}?page=${page + 1}`
-          : null,
-      prev:
-        page > 1 ? `${req.path}?page=${page - 1}` : null,
+      next: page < totalPages ? `${req.path}?page=${page + 1}` : null,
+      prev: page > 1 ? `${req.path}?page=${page - 1}` : null,
     };
 
     // Tạo đối tượng JSON phản hồi
@@ -494,9 +563,7 @@ router.get("/get-all-kekhai-xuatmau", async (req, res) => {
     const result = await pool
       .request()
       .input("sohoso", req.query.sohoso)
-      .query(
-        `SELECT * from ${table_name} where sohoso=@sohoso`
-      );
+      .query(`SELECT * from ${table_name} where sohoso=@sohoso`);
     const kekhai = result.recordset;
     res.json({
       success: true,
