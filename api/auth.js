@@ -85,107 +85,107 @@ router.post("/access/login", async (req, res, next) => {
   }
 });
 
-router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
-  // console.log(req.body);
-  try {
-    await pool.connect();
-    const result = await pool
-      .request()
-      .input("email", req.body.email)
-      .query(
-        `SELECT email, cccd, masobhxh FROM users where active=1 and email=@email and role<>1`
-      );
+// router.post("/callresetpass", upload.single("avatar"), async (req, res) => {
+//   // console.log(req.body);
+//   try {
+//     await pool.connect();
+//     const result = await pool
+//       .request()
+//       .input("email", req.body.email)
+//       .query(
+//         `SELECT email, cccd, masobhxh FROM users where active=1 and email=@email and role<>1`
+//       );
 
-    if (result.recordset.length === 0) {
-      res.status(404).json({
-        message: "Email không tồn tại hoặc chưa được kích hoạt",
-      });
-      return;
-    }
+//     if (result.recordset.length === 0) {
+//       res.status(404).json({
+//         message: "Email không tồn tại hoặc chưa được kích hoạt",
+//       });
+//       return;
+//     }
 
-    const user = result.recordset[0];
-    // console.log(user);
+//     const user = result.recordset[0];
+//     // console.log(user);
 
-    // console.log(user.cccd === req.body.cccd);
-    // console.log(user.cccd === req.body.cccd);
+//     // console.log(user.cccd === req.body.cccd);
+//     // console.log(user.cccd === req.body.cccd);
 
-    // check CCCD và masobhxh
-    if (user.cccd !== req.body.cccd || user.masobhxh !== req.body.masobhxh) {
-      // CCCD hoặc masobhxh không khớp
-      res.status(400).json({
-        message: "CCCD hoặc Mã số BHXH không đúng thông tin đã đăng ký",
-      });
-      return;
-    }
+//     // check CCCD và masobhxh
+//     if (user.cccd !== req.body.cccd || user.masobhxh !== req.body.masobhxh) {
+//       // CCCD hoặc masobhxh không khớp
+//       res.status(400).json({
+//         message: "CCCD hoặc Mã số BHXH không đúng thông tin đã đăng ký",
+//       });
+//       return;
+//     }
 
-    if (user.cccd === req.body.cccd && user.masobhxh === req.body.masobhxh) {
-      // Thông tin khớp, gửi mật khẩu mới
-      const newPass = Math.random().toString(36).slice(-8); // Tạo mật khẩu ngẫu nhiên
-      const hashedPass = await bcrypt.hash(newPass, 10);
+//     if (user.cccd === req.body.cccd && user.masobhxh === req.body.masobhxh) {
+//       // Thông tin khớp, gửi mật khẩu mới
+//       const newPass = Math.random().toString(36).slice(-8); // Tạo mật khẩu ngẫu nhiên
+//       const hashedPass = await bcrypt.hash(newPass, 10);
 
-      await pool
-        .request()
-        .input("email", req.body.email)
-        .input("password", hashedPass)
-        .query(`UPDATE users SET password = @password WHERE email = @email`);
+//       await pool
+//         .request()
+//         .input("email", req.body.email)
+//         .input("password", hashedPass)
+//         .query(`UPDATE users SET password = @password WHERE email = @email`);
 
-      // gửi thư mật khẩu đến cho người dùng
+//       // gửi thư mật khẩu đến cho người dùng
 
-      const subject = `Email Reset mật khẩu từ hệ thống phần mềm ansinhbhxh.online`;
-      const content = `
-      <p>Xin chào bạn!</p>
-      <p>Chúng tôi đã nhận được yêu cầu Reset Mật khẩu từ bạn hoặc cá nhân tổ chức nào đó lấy thông tin email của bạn để thực hiện (nếu trường hợp không phải là bạn thì bạn hãy bỏ qua email này gửi email phản hồi lại cho chúng tôi thông qua email sonthucompany@gmail.com)</p>
-      <hr />
-      <p>Bạn đã thực hiện thành công yêu cầu Reset mật khẩu. Mật khẩu mới của bạn là:</p>
-      <ul>
-        <li>Mật khẩu mới: ${newPass}</li>
-        <li>Đây là mật khẩu đăng nhập vào phần mềm, tuyệt đối không tiết lộ hay chia sẽ cho bất kỳ ai</li>
-      </ul>
-      <hr />
-      <p>* CHÚC BẠN CÓ NHỮNG TRẢI NGHIỆM TỐT NHẤT KHI SỬ DỤNG HỆ THỐNG PHẦN MỀM CỦA CÔNG TY CHÚNG TÔI *</p>
-      <p>* CÔNG VIỆC CỦA BẠN - SỨ MỆNH CỦA CHÚNG TÔI *</p>
-    `;
-      if (!req.body.email || !subject || !content)
-        throw new Error("Please provide email, subject and content!");
-      /**
-       * Lấy AccessToken từ RefreshToken (bởi vì Access Token cứ một khoảng thời gian ngắn sẽ bị hết hạn)
-       * Vì vậy mỗi lần sử dụng Access Token, chúng ta sẽ generate ra một thằng mới là chắc chắn nhất.
-       */
-      // console.log('start access');
-      // console.log(myOAuth2Client);
-      const myAccessTokenObject = await myOAuth2Client.getAccessToken();
-      // console.log(myAccessTokenObject);
-      // Access Token sẽ nằm trong property 'token' trong Object mà chúng ta vừa get được ở trên
-      const myAccessToken = myAccessTokenObject?.token;
-      // console.log(myAccessToken);
-      // // Tạo một biến Transport từ Nodemailer với đầy đủ cấu hình, dùng để gọi hành động gửi mail
-      const transport = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          type: "OAuth2",
-          user: ADMIN_EMAIL_ADDRESS,
-          clientId: GOOGLE_MAILER_CLIENT_ID,
-          clientSecret: GOOGLE_MAILER_CLIENT_SECRET,
-          refresh_token: GOOGLE_MAILER_REFRESH_TOKEN,
-          accessToken: myAccessToken,
-        },
-      });
-      // mailOption là những thông tin gửi từ phía client lên thông qua API
-      const mailOptions = {
-        to: req.body.email, // Gửi đến ai?
-        subject: subject, // Tiêu đề email
-        html: `<h3>${content}</h3>`, // Nội dung email
-      };
-      // Gọi hành động gửi email
-      await transport.sendMail(mailOptions);
-      // Không có lỗi gì thì trả về success
-      res.status(200).json({ message: "Email sent successfully." });
+//       const subject = `Email Reset mật khẩu từ hệ thống phần mềm ansinhbhxh.online`;
+//       const content = `
+//       <p>Xin chào bạn!</p>
+//       <p>Chúng tôi đã nhận được yêu cầu Reset Mật khẩu từ bạn hoặc cá nhân tổ chức nào đó lấy thông tin email của bạn để thực hiện (nếu trường hợp không phải là bạn thì bạn hãy bỏ qua email này gửi email phản hồi lại cho chúng tôi thông qua email sonthucompany@gmail.com)</p>
+//       <hr />
+//       <p>Bạn đã thực hiện thành công yêu cầu Reset mật khẩu. Mật khẩu mới của bạn là:</p>
+//       <ul>
+//         <li>Mật khẩu mới: ${newPass}</li>
+//         <li>Đây là mật khẩu đăng nhập vào phần mềm, tuyệt đối không tiết lộ hay chia sẽ cho bất kỳ ai</li>
+//       </ul>
+//       <hr />
+//       <p>* CHÚC BẠN CÓ NHỮNG TRẢI NGHIỆM TỐT NHẤT KHI SỬ DỤNG HỆ THỐNG PHẦN MỀM CỦA CÔNG TY CHÚNG TÔI *</p>
+//       <p>* CÔNG VIỆC CỦA BẠN - SỨ MỆNH CỦA CHÚNG TÔI *</p>
+//     `;
+//       if (!req.body.email || !subject || !content)
+//         throw new Error("Please provide email, subject and content!");
+//       /**
+//        * Lấy AccessToken từ RefreshToken (bởi vì Access Token cứ một khoảng thời gian ngắn sẽ bị hết hạn)
+//        * Vì vậy mỗi lần sử dụng Access Token, chúng ta sẽ generate ra một thằng mới là chắc chắn nhất.
+//        */
+//       // console.log('start access');
+//       // console.log(myOAuth2Client);
+//       const myAccessTokenObject = await myOAuth2Client.getAccessToken();
+//       // console.log(myAccessTokenObject);
+//       // Access Token sẽ nằm trong property 'token' trong Object mà chúng ta vừa get được ở trên
+//       const myAccessToken = myAccessTokenObject?.token;
+//       // console.log(myAccessToken);
+//       // // Tạo một biến Transport từ Nodemailer với đầy đủ cấu hình, dùng để gọi hành động gửi mail
+//       const transport = nodemailer.createTransport({
+//         service: "gmail",
+//         auth: {
+//           type: "OAuth2",
+//           user: ADMIN_EMAIL_ADDRESS,
+//           clientId: GOOGLE_MAILER_CLIENT_ID,
+//           clientSecret: GOOGLE_MAILER_CLIENT_SECRET,
+//           refresh_token: GOOGLE_MAILER_REFRESH_TOKEN,
+//           accessToken: myAccessToken,
+//         },
+//       });
+//       // mailOption là những thông tin gửi từ phía client lên thông qua API
+//       const mailOptions = {
+//         to: req.body.email, // Gửi đến ai?
+//         subject: subject, // Tiêu đề email
+//         html: `<h3>${content}</h3>`, // Nội dung email
+//       };
+//       // Gọi hành động gửi email
+//       await transport.sendMail(mailOptions);
+//       // Không có lỗi gì thì trả về success
+//       res.status(200).json({ message: "Email sent successfully." });
 
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
+//     }
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// });
 
 /* Get email */
 router.get("/findemail", async (req, res) => {
