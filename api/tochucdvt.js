@@ -4,7 +4,6 @@ const { pool } = require("../database/dbinfo");
 
 // add ke khai
 router.post("/add-org", async (req, res) => {
-  console.log(req.body);
   try {
     await pool.connect();
     const result = await pool
@@ -46,7 +45,6 @@ router.get("/all-org", async (req, res) => {
 
 // xóa tổ chức
 router.post("/delete/org", async (req, res) => {
-  // console.log(req.body);
   try {
     await pool.connect();
     const result = await pool
@@ -55,7 +53,6 @@ router.post("/delete/org", async (req, res) => {
       .query(`SELECT * FROM tochucdvt WHERE _id = @_id`);
 
     let tc = result.recordset.length ? result.recordset[0] : null;
-    // console.log(user);
     if (tc) {
       await pool
         .request()
@@ -71,6 +68,5 @@ router.post("/delete/org", async (req, res) => {
     res.status(500).json(error);
   }
 });
-
 
 module.exports = router;

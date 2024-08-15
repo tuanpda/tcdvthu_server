@@ -80,7 +80,6 @@ router.get("/:_id", async (req, res) => {
 /* Cập nhật 1 user thường không qua auth */
 router.patch("/user/:_id", upload.single("avatar"), async (req, res) => {
   let linkAvatar;
-  // console.log(req.file);
   if (!req.file) {
     linkAvatar = req.body.avatar;
   } else {
@@ -154,10 +153,9 @@ router.post("/user/fix", upload.single("avatar"), async (req, res) => {
     // console.log(filePath);
     fs.unlink(filePath, (err) => {
       if (err) {
-        console.error("Đã xảy ra lỗi khi xóa tệp:", err);
+        console.error("error", err);
         return;
       }
-      console.log("Tệp đã được xóa thành công");
     });
     linkAvatar = `http://ansinhbhxh.online/avatar/${req.file.filename}`;
   }

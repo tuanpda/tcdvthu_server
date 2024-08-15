@@ -14,7 +14,6 @@ const {
 
 // add ke khai chạy lẻ từng dòng
 router.post("/add-kekhai", async (req, res) => {
-  // console.log(req.body);
   try {
     await pool.connect();
     // Tạo số hồ sơ duy nhất
@@ -24,7 +23,6 @@ router.post("/add-kekhai", async (req, res) => {
     const newSoHoSo = (maxSoHoSoResult.recordset[0].max_so_ho_so || 0) + 1;
     const soHoso =
       newSoHoSo + "/" + req.body.nvt_masobhxh + "/" + req.body.nvt_cccd;
-    // console.log(soHoso);
 
     const result = await pool
       .request()
@@ -105,11 +103,8 @@ router.post("/add-kekhai", async (req, res) => {
 
 // add ke khai chạy theo bộ
 router.post("/add-kekhai-series", async (req, res) => {
-  // console.log(req.body);
   let dataKekhai = req.body;
-  // console.log(dataKekhai);
   let transaction = null;
-  // Tạo mảng để lưu thông tin cần trả lại sau khi thành công
   const listSuccess = [];
 
   try {
@@ -243,7 +238,6 @@ router.post("/add-kekhai-series", async (req, res) => {
 
 // đẩy thông tin lên cổng
 router.post("/pushinfotoportbhxhvn", async (req, res) => {
-  console.log(req.body);
   try {
     await pool.connect();
 
@@ -294,7 +288,6 @@ router.get("/all-ds-kekhai", async (req, res) => {
 
 // all danh sách kê khai with loại hình
 router.get("/getalldskkwithmalh", async (req, res) => {
-  // console.log(req.query.maloaihinh);
   try {
     await pool.connect();
     const result = await pool
@@ -310,7 +303,6 @@ router.get("/getalldskkwithmalh", async (req, res) => {
 
 // all danh sách kê khai with loại hình with madaily
 router.get("/getalldskkwithmalh", async (req, res) => {
-  // console.log(req.query.maloaihinh);
   try {
     await pool.connect();
     const result = await pool
@@ -329,7 +321,6 @@ router.get("/getalldskkwithmalh", async (req, res) => {
 
 // all danh sách kê khai with loại hình with madaily
 router.get("/getallkekhaiwithuser", async (req, res) => {
-  // console.log(req.query.maloaihinh);
   try {
     await pool.connect();
     const result = await pool
@@ -458,19 +449,16 @@ router.get("/kykekhai-search-series-pagi", async (req, res) => {
     const page = parseInt(req.query.page) || 1; // Chuyển đổi page thành số nguyên
     const limit = parseInt(req.query.limit, 10) || 10;
     const offset = (page - 1) * limit;
-    // console.log(offset);
-    // console.log(typeof(offset));
+
     const kykekhai = req.query.kykekhai;
     const madaily = req.query.madaily;
     const sohoso = req.query.sohoso;
     const dotkekhai = req.query.dotkekhai;
     const ngaykekhai = req.query.ngaykekhai;
 
-    console.log(ngaykekhai);
     // Chuyển đổi ngày người dùng nhập vào sang định dạng DD-MM-YYYY
     const [year, month, day] = ngaykekhai.split("-");
     let ngaykekhaiInput = day + "-" + month + "-" + year;
-    console.log(ngaykekhaiInput);
 
     let queryFirst = `SELECT tendaily, sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
         FROM kekhai where madaily=@madaily
@@ -509,7 +497,6 @@ router.get("/kykekhai-search-series-pagi", async (req, res) => {
 
     const query = queryFirst + " " + queryPlus;
     const queryCount = queryCountFirst + " " + queryCountPlus;
-    // console.log(queryCount);
 
     await pool.connect();
 
