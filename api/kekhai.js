@@ -545,6 +545,105 @@ router.get("/kykekhai-search-series-pagi", async (req, res) => {
   }
 });
 
+// tim ho so ke khai cho nhan vien thu
+router.get("/kykekhai-search-series-pagi-nvcty", async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1; // Chuyển đổi page thành số nguyên
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const offset = (page - 1) * limit;
+
+    const kykekhai = req.query.kykekhai;
+    const sohoso = req.query.sohoso;
+    const dotkekhai = req.query.dotkekhai;
+    const ngaykekhai = req.query.ngaykekhai;
+
+    // Chuyển đổi ngày người dùng nhập vào sang định dạng DD-MM-YYYY
+    const [year, month, day] = ngaykekhai.split("-");
+    let ngaykekhaiInput = day + "-" + month + "-" + year;
+
+    let queryFirst = `SELECT tendaily, sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
+        FROM kekhai where 1=1
+        `;
+    let queryPlus = `GROUP BY tendaily, sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
+        ORDER BY cast(dotkekhai as int) desc OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY`;
+
+    let queryCountFirst = `with t as (
+          SELECT sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh, COUNT(*) AS so_luong
+          FROM kekhai where 1=1
+          `;
+
+    let queryCountPlus = `GROUP BY sohoso, dotkekhai, kykekhai, ngaykekhai, madaily, trangthai, maloaihinh, tenloaihinh
+          )
+          SELECT COUNT(*) AS totalCount FROM t`;
+
+    if (req.query.kykekhai) {
+      queryFirst += ` and kykekhai=@kykekhai`;
+      queryCountFirst += ` and kykekhai=@kykekhai`;
+    }
+
+    if (req.query.sohoso) {
+      queryFirst += ` and sohoso=@sohoso`;
+      queryCountFirst += ` and sohoso=@sohoso`;
+    }
+
+    if (req.query.dotkekhai) {
+      queryFirst += ` and dotkekhai=@dotkekhai`;
+      queryCountFirst += ` and dotkekhai=@dotkekhai`;
+    }
+
+    if (req.query.ngaykekhai) {
+      queryFirst += ` and CONVERT(VARCHAR(10), ngaykekhai, 105)=@ngaykekhai`;
+      queryCountFirst += ` and CONVERT(VARCHAR(10), ngaykekhai, 105)=@ngaykekhai`;
+    }
+
+    const query = queryFirst + " " + queryPlus;
+    const queryCount = queryCountFirst + " " + queryCountPlus;
+
+    await pool.connect();
+
+    const result = await pool
+      .request()
+      .input("kykekhai", kykekhai)
+      .input("sohoso", sohoso)
+      .input("dotkekhai", dotkekhai)
+      .input("ngaykekhai", ngaykekhaiInput)
+      .input("offset", offset)
+      .input("limit", limit)
+      .query(query);
+
+    const data = result.recordset;
+
+    // Đếm tổng số lượng bản ghi
+    const countResult = await pool
+      .request()
+      .input("kykekhai", kykekhai)
+      .input("sohoso", sohoso)
+      .input("dotkekhai", dotkekhai)
+      .input("ngaykekhai", ngaykekhaiInput)
+      .query(queryCount);
+    const totalCount = countResult.recordset[0].totalCount;
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const info = {
+      count: totalCount,
+      pages: totalPages,
+      next: page < totalPages ? `${req.path}?page=${page + 1}` : null,
+      prev: page > 1 ? `${req.path}?page=${page - 1}` : null,
+    };
+
+    // Tạo đối tượng JSON phản hồi
+    const response = {
+      info: info,
+      results: data,
+    };
+
+    res.json(response);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 // xuất mẫu hồ sơ liệt kê danh sách
 router.get("/get-all-kekhai-xuatmau", async (req, res) => {
   try {
