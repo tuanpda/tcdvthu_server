@@ -43,10 +43,14 @@ app.use("/api/nguoihuong", require("./api/nguoihuong"));
 app.use("/api/org/kekhai_2902141757", require("./api/org/kekhai_2902141757"));
 
 app.listen(process.env.PORT, () => {
-  // console.log(
-  //   `Server started running on ${process.env.PORT} for ${process.env.NODE_ENV}`
-  // );
+  const port = process.env.PORT;
+
+  // Kiểm tra đơn giản để đảm bảo rằng giá trị port là một số
   if (process.env.NODE_ENV !== "production") {
-    console.log(`Server started running on port ${process.env.PORT}`);
+    if (!isNaN(port)) {
+      console.log(`Server đang chạy trên cổng ${port}`);
+    } else {
+      console.log("Số cổng không hợp lệ");
+    }
   }
 });
